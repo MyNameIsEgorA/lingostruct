@@ -1,0 +1,29 @@
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    background-color: var(--dark-blue-color);
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 24px;
+}
+
+.organization {
+    background-color: #0000001A;
+    color: white;
+    padding: 12px;
+    margin-top: 24px;
+}
+
+.organization .image {
+    padding: 8px;
+    background: #F0F3F600;
+    width: 30px;
+    height: 24px;
+}
+
+.darkC {
+    background-color: var(--dark-blue-color);
+}
