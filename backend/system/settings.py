@@ -1,9 +1,11 @@
 import os.path
 from pathlib import Path
 
+from .secret_local import *
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-4d8otobg*_cs=-t71uv2oh!q!g9q9v7ojd%b)flmx_a@u$og-k'
+SECRET_KEY = SECRET_KEY
 
 DEBUG = True
 
@@ -54,8 +56,10 @@ WSGI_APPLICATION = 'system.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'lingostruct_bd',
+        'USER': USER,
+        'PASSWORD': PASSWORD,
     }
 }
 
@@ -83,9 +87,9 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = 'static/'
-STATICFILES_DIRS = os.path.join(BASE_DIR / 'static')
+STATICFILES_DIRS = [os.path.join(BASE_DIR / 'static')]
 
 MEDIA_URL = 'media/'
-MEDIA_ROOT = os.path.join(BASE_DIR / 'media')
+MEDIA_ROOT = [os.path.join(BASE_DIR / 'media')]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
