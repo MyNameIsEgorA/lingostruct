@@ -6,4 +6,4 @@ venv
 .cache
 
 # Файлы для личного пользования
-secret_back.py
+backend/system/secret_local.py
