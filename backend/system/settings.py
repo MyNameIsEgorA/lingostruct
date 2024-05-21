@@ -58,6 +58,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'lingostruct_bd',
+        'HOST': "localhost",
         'USER': USER,
         'PASSWORD': PASSWORD,
     }
