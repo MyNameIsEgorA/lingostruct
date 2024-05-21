@@ -1,5 +1,28 @@
 # lingostruct
-lingostruct
+
+
+# Python3.12 + venv
+
+# -- Commands
+
+# install requirements
+cd backend
+pip install -r requirements.txt
+
+# -- Django команды
+
+# Запуск
+python manage.py runserver
+# миграции в бд
+python manage.py migrate
+# создание админа
+python manage.py createsuperuser
+
+
+
+
+
+
 
 # -- Backend
 # - Модели
@@ -48,7 +71,7 @@ lingostruct
 
 
 # ? Вопросы
-- Формат даты и времени + 
+- Формат даты и времени Любой
 - Проверка базовых настроек для запуска сервера
 - JWT или Токен - JWT
 
