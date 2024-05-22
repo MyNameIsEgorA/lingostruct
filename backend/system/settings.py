@@ -26,7 +26,6 @@ INSTALLED_APPS += [
     'django_filters',
     'corsheaders',
     'rest_framework_simplejwt',
-
     'profile_user',
 ]
 
