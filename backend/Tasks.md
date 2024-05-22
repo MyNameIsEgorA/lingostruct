@@ -1,5 +1,9 @@
 # lingostruct
 
+# -- Urls
+# docs
+127.0.0.1:8000/docs
+
 
 # Python3.12 + venv
 
@@ -75,3 +79,5 @@ python manage.py createsuperuser
 - Проверка базовых настроек для запуска сервера
 - JWT или Токен - JWT
 
+
+-Регистрацию сделать
