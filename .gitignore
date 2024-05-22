@@ -1,6 +1,6 @@
 # Виртуальное окружение
 venv
-
+.venv
 # Папки кэша
 .idea
 backend/__pycache__
