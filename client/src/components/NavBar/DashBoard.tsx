@@ -6,14 +6,15 @@ import Image from "next/image";
 import Arrow from "../../../public/arrow.svg"
 import {IOrganizationLink} from "@/types/Organizations";
 import Link from "next/link";
+import {observer} from "mobx-react";
+import userStore from "@/stores/UserStore";
 
 interface IProps {
     organizations: IOrganizationLink[]
 }
 
-export const DashBoard: React.FC<IProps> = ({organizations}): ReactNode => {
-
-    const [title, setTitle] = useState<string>(organizations[0].title)
+export const DashBoard: React.FC<IProps> = observer(({organizations}): ReactNode => {
+    const [title, setTitle] = useState<string>(userStore.getActiveOrganization() !== "" ? userStore.getActiveOrganization : organizations[0].title)
     const [showList, setShowList] = useState<boolean>(true)
 
     return (
@@ -33,7 +34,8 @@ export const DashBoard: React.FC<IProps> = ({organizations}): ReactNode => {
                         <div key={index} className={"py-3 p-3 border-t-[1px] border-white w-full"}>
                             <button className={""}
                                   onClick={() => {
-                                      setTitle(organization.title)
+                                      userStore.setActiveOrganization(organization.title)
+                                      setTitle(userStore.getActiveOrganization())
                                       setShowList(false)
                                   }}
                                   >{organization.title}
@@ -43,5 +45,5 @@ export const DashBoard: React.FC<IProps> = ({organizations}): ReactNode => {
             </div>
         </>
     )
-}
+})
 
