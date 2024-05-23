@@ -1,6 +1,6 @@
 # PostgreSQL
 NAME = 'lingostruct_db'
-USER = 'bossfi'
+USER = 'lingo_admin'
 PASSWORD = '159753'
 
 # Secret
