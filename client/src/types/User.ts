@@ -8,3 +8,14 @@ export interface IUserNavBar {
     name: string,
     email: string,
 }
+
+export interface IUserLogin {
+    email: string;
+    password: string;
+}
+
+
+export interface IUserToken {
+    access: string,
+    refresh: string,
+}

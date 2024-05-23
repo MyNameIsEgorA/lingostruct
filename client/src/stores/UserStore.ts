@@ -1,7 +1,11 @@
 import {makeAutoObservable} from "mobx";
 
-import {IUserNavBar} from "@/types/User";
+import {IUserLogin, IUserNavBar, IUserToken} from "@/types/User";
 import {IOrganizationLink} from "@/types/Organizations";
+import loginUserAPI from "@/api/user/login";
+import login from "@/api/user/login";
+import {string} from "yup";
+import {cookies} from "next/headers";
 
 class UserStore {
 
@@ -45,6 +49,13 @@ class UserStore {
         }));
     }
 
+    saveTokenToStorage = (tokensData: IUserToken) => {
+        localStorage.setItem('UserToken', JSON.stringify({
+            access: tokensData.access,
+            refresh: tokensData.refresh,
+        }))
+    }
+
     loadStateFromStorage = () => {
         const storedState = localStorage.getItem('UserStore');
         if (storedState) {
@@ -52,6 +63,15 @@ class UserStore {
             this.status = state.status;
             this.activeOrganization = state.activeOrganization;
         }
+    }
+
+    loginUser = async (loginData: IUserLogin): Promise<string | undefined> => {
+        const response: string | IUserToken = await loginUserAPI(loginData)
+        if (typeof response == "string") {
+            return undefined
+        }
+        this.saveTokenToStorage(response)
+        return "cool"
     }
 
 }

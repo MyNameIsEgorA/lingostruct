@@ -11,24 +11,35 @@ import {DashBoard} from "@/components/NavBar/DashBoard";
 
 const NavBar = observer(() => {
     const [userData, setUserData] = useState<IUserNavBar | undefined>();
+    const [show, setShow] = useState<boolean>(true)
 
     useLayoutEffect(() => {
-        const fetchData = async () => {
-            const data = await userStore.getNavBarData();
+
+        const setWindowHeight = (): void => {
+            setShow(window.innerWidth > 600)
+        }
+        const fetchData = async (): Promise<void> => {
+            const data: IUserNavBar | undefined = await userStore.getNavBarData();
             setUserData(data);
         };
 
         fetchData();
-    }, []); // пустой массив зависимостей означает, что эффект будет выполнен только один раз при монтировании компонента
+        window.addEventListener("resize", setWindowHeight)
+        setWindowHeight();
+
+        return () => window.removeEventListener("resize", setWindowHeight)
+
+    }, []);
 
     return (
         <nav className={"navbar"}>
-            <Image src={Logo} alt="TGA" className="logo"/>
-
-            {userData && <div>
-                {userData.email}
+            <div className="p-10 desktop:p-0">
+                <Image src={Logo} alt="TGA" className="logo"/>
+            </div>
+            {show && userData && <div>
                 <DashBoard organizations={userData.organizations}/>
-            </div>}
+            </div>
+            }
         </nav>
     );
 });

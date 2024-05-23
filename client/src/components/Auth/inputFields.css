@@ -1,0 +1,11 @@
+#password, #email {
+    transition: 500ms;
+}
+
+#password:hover, #email:hover {
+    border: 2px solid #e3df5b;
+}
+
+#password:focus, #email:focus {
+    border: 2px solid darkorange;
+}
