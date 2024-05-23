@@ -1,5 +1,5 @@
 # PostgreSQL
-NAME = 'lingostruct_bd'
+NAME = 'lingostruct_db'
 USER = 'bossfi'
 PASSWORD = '159753'
 

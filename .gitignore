@@ -7,3 +7,4 @@ backend/__pycache__
 
 # Файлы для личного пользования
 backend/system/secret_local.py
+
