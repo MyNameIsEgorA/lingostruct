@@ -11,12 +11,13 @@ import {DashBoard} from "@/components/NavBar/DashBoard";
 
 const NavBar = observer(() => {
     const [userData, setUserData] = useState<IUserNavBar | undefined>();
-    const [show, setShow] = useState<boolean>(true)
+    const [isDesktop, setIsDesktop] = useState<boolean>(true)
+    const [showNavBar, setShowNavBar] = useState<boolean>(false)
 
     useLayoutEffect(() => {
 
         const setWindowHeight = (): void => {
-            setShow(window.innerWidth > 600)
+            setIsDesktop(window.innerWidth > 600)
         }
         const fetchData = async (): Promise<void> => {
             const data: IUserNavBar | undefined = await userStore.getNavBarData();
@@ -33,10 +34,16 @@ const NavBar = observer(() => {
 
     return (
         <nav className={"navbar"}>
-            <div className="p-10 desktop:p-0">
+            <div className="p-5 desktop:p-0 mobile-nav flex justify-between items-center">
                 <Image src={Logo} alt="TGA" className="logo"/>
+                {!isDesktop && <div
+                    className={`text-white text-4xl ${showNavBar ? " rotate-45" : ""} cursor-pointer`}
+                    onClick={() => {setShowNavBar(!showNavBar)}}
+                >
+                    +
+                </div>}
             </div>
-            {show && userData && <div>
+            {(isDesktop || showNavBar) && userData && <div>
                 <DashBoard organizations={userData.organizations}/>
             </div>
             }

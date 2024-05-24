@@ -8,6 +8,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: self-start;
+    overflow: hidden;
     /* Дополнительные стили для левого компонента */
 }
 
@@ -54,4 +55,33 @@
     text-align: left;
     margin-top: 12px;
     color: #79828B;
+}
+
+@media (max-width: 600px) {
+    .right-component {
+        display: none;
+    }
+}
+
+@media (max-width: 400px) {
+    .left-component {
+        left: 10%;
+        right: 10%;
+        width: 80%;
+    }
+
+    .auth-heading {
+        margin-left: 10%;
+        margin-top: 10%;
+        font-size: 2vw;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        text-align: left;
+        color: white;
+    }
+
+    .form-description {
+        font-size: 12px;
+        margin-top: 10px;
+    }
 }

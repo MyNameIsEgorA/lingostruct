@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import "./inputFields.css";
 import { IUserLogin } from "@/types/User";
 import userStore from "@/stores/UserStore";
+import Link from "next/link";
 
 const LoginFormInput = () => {
     const [loginData, setLoginData] = useState<IUserLogin>({ email: "", password: "" });
@@ -37,7 +38,7 @@ const LoginFormInput = () => {
 
     return (
         <div className="flex items-center justify-center mt-8">
-            <div className="w-[344px]">
+            <div className="desktop:w-[344px]">
                 <form onSubmit={submit}>
                     <div className="mb-4">
                         <label htmlFor="email" className="block text-gray-900 text-[14px] mb-1">
@@ -47,7 +48,7 @@ const LoginFormInput = () => {
                             value={loginData.email}
                             onChange={(e) => changeData("email", e)}
                             id="email"
-                            className="border rounded-lg w-full py-3 h-11 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            className="input-field"
                             required
                         />
                     </div>
@@ -59,16 +60,22 @@ const LoginFormInput = () => {
                             type="password"
                             id="password"
                             onChange={(e) => changeData("password", e)}
-                            className="border rounded-lg w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline h-11"
+                            className="input-field"
                             required
                         />
                     </div>
-                    <button
-                        type="submit"
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline w-full mt-[52px]"
-                    >
-                        Login
-                    </button>
+                    <div className="flex flex-col items-end space-y-4">
+                        <button
+                            type="submit"
+                            className="submit-button"
+                        >
+                            Login
+                        </button>
+                        <Link
+                            className="text-[10px] desktop:text-[14px] text-orange-500 hover:text-orange-700 transition-[500ms]"
+                            href={"register"}
+                        >Создать аккаунт</Link>
+                    </div>
                 </form>
             </div>
         </div>

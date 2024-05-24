@@ -1,4 +1,4 @@
-import "./LoginForm.css"
+import "./authForm.css"
 import Logo from "../../../public/TGA.png"
 import Image from "next/image";
 import LoginFormInput from "@/components/Auth/LoginFormInput";

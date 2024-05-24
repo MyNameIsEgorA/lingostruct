@@ -1,4 +1,4 @@
-import "./LoginForm.css"
+import "./authForm.css"
 
 import Image from "next/image";
 import AuthImage from "../../../public/AuthFormImage.png";
