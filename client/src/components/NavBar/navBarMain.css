@@ -1,13 +1,14 @@
 .navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
     width: 280px;
     background-color: var(--dark-blue-color);
     padding-left: 16px;
     padding-right: 16px;
     padding-top: 24px;
+    height: 100vh
+}
+
+.mobile-nav {
+
 }
 
 .organization {
@@ -26,4 +27,32 @@
 
 .darkC {
     background-color: var(--dark-blue-color);
+}
+
+.dashboard-data {
+    margin: 0;
+}
+
+@media (max-width: 600px) {
+    .navbar {
+        width: 100vw;
+        height: 100vh;
+        position: fixed;
+        padding: 0;
+    }
+
+    .organization {
+        padding: 15px;
+        margin-top: 10px;
+    }
+
+    .dashboard-data {
+        margin: 0 12px
+    }
+}
+
+@media (min-width: 600px) {
+    .logo {
+        margin-top: 20px;
+    }
 }
