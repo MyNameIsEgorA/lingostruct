@@ -10,7 +10,7 @@ SECRET_KEY = 'django-insecure-4d8otobg*_cs=-t71uv2oh!q!g9q9v7ojd%b)flmx_a@u$og-k
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['lingostruct.ru']
+ALLOWED_HOSTS = ['api.lingostruct.ru']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
