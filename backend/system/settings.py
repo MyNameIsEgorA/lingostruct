@@ -9,9 +9,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-4d8otobg*_cs=-t71uv2oh!q!g9q9v7ojd%b)flmx_a@u$og-k'
 
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['api.lingostruct.ru']
+ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -41,7 +41,7 @@ REST_FRAMEWORK = {
 
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-#        'rest_framework.authentication.BasicAuthentication',
+        # 'rest_framework.authentication.BasicAuthentication',
 
     ],
 
@@ -64,9 +64,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-#MIDDLEWARE += [
-#    'corsheaders.middleware.CorsMiddleware',
-#]
+# MIDDLEWARE += [
+#     'corsheaders.middleware.CorsMiddleware',
+# ]
 
 ROOT_URLCONF = 'system.urls'
 
@@ -153,7 +153,7 @@ SPECTACULAR_SETTINGS = {
     ],
 
     'SERVE_AUTHENTICATION': [
- #       'rest_framework.authentication.BasicAuthentication'
+       # 'rest_framework.authentication.BasicAuthentication'
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
 
