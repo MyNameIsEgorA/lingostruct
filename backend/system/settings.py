@@ -1,6 +1,7 @@
-import os.path
 from pathlib import Path
 from datetime import timedelta
+import os
+
 
 from .secret_local import *
 
@@ -10,7 +11,7 @@ SECRET_KEY = 'django-insecure-4d8otobg*_cs=-t71uv2oh!q!g9q9v7ojd%b)flmx_a@u$og-k
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['lingostruct.ru']
+ALLOWED_HOSTS = ['api.lingostruct.ru']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -40,7 +41,7 @@ REST_FRAMEWORK = {
 
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-        # 'rest_framework.authentication.BasicAuthentication',
+#        'rest_framework.authentication.BasicAuthentication',
 
     ],
 
@@ -55,6 +56,7 @@ REST_FRAMEWORK = {
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -62,9 +64,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-MIDDLEWARE += [
-    'corsheaders.middleware.CorsMiddleware',
-]
+#MIDDLEWARE += [
+#    'corsheaders.middleware.CorsMiddleware',
+#]
 
 ROOT_URLCONF = 'system.urls'
 
@@ -118,13 +120,11 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles/')
-STATICFILES_DIRS = [
-	os.path.join(BASE_DIR, 'static'),
-	]
+STATIC_ROOT = os.path.join(BASE_DIR, '/static')
+# STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -132,7 +132,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_HEADERS = ['*']
-# CSRF_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000/', '*',
+]
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:3000/', '*',
+]
+
 
 # DRF Spectacular
 SPECTACULAR_SETTINGS = {
@@ -146,7 +153,7 @@ SPECTACULAR_SETTINGS = {
     ],
 
     'SERVE_AUTHENTICATION': [
-        # 'rest_framework.authentication.BasicAuthentication'
+ #       'rest_framework.authentication.BasicAuthentication'
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
 
