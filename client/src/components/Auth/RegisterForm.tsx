@@ -1,89 +1,51 @@
 "use client"
 
 import React, { useState } from 'react';
-import {IUserPassword, IUserRegisterContactInfo} from "@/types/User";
+import { IUserPassword, IUserRegisterContactInfo } from "@/types/User";
 import "./authForm.css"
+import FirstStep from "@/components/Auth/RegisterSteps/FirstStep";
+import Image from "next/image";
+import Logo from "../../../public/TGA.png";
+import Link from "next/link";
+import SecondStep from "@/components/Auth/RegisterSteps/SecondStep";
+import {observer} from "mobx-react";
+import userStore from "@/stores/UserStore";
+import ThirdStep from "@/components/Auth/RegisterSteps/ThirdStep";
 
-const RegistrationForm = () => {
+
+const RegistrationForm = observer(() => {
     const [step, setStep] = useState<number>(1);
-    const [userData, setUserData] = useState<IUserRegisterContactInfo>({ name: '', email: '' });
-    const [password, setPassword] = useState<IUserPassword>({password1: "", password2: ""});
 
-    const handleNext = () => {
-        if (step === 1 && userData.name && userData.email) {
-            setStep(2);
-        } else if (step === 2 && password.password1 && password.password2 == password.password2) {
+    const handleNext = (): void => {
+        console.log(userStore.userLanguage, userStore.userRegisterContactInfo)
+        if (step === 1) {
+            const {name, email} = userStore.userRegisterContactInfo
+            if (name !== "" && email != "") {
+                setStep(2);
+            }
+        } else if (step === 2 && userStore.userLanguage.language !== "") {
             setStep(3);
         }
     };
 
-    const handleBack = () => {
-        if (step > 1) {
-            setStep(step - 1);
-        }
-    };
-
-    const handleInputChange = (e: any): void => {
-        const { name, value } = e.target;
-        setUserData({ ...userData, [name]: value });
-    };
-
-    const handlePasswordChange = (e: any, field: string): void => {
-        setPassword(prevPassword => ({
-            ...prevPassword,
-            [field]: e.target.value
-        }));
-    };
-
     return (
         <div className="left-component">
-            {step === 1 && (
-                <div>
-                    <input
-                        type="text"
-                        name="name"
-                        placeholder="Имя"
-                        value={userData.name}
-                        onChange={handleInputChange}
-                    />
-                    <input
-                        type="email"
-                        name="email"
-                        placeholder="Email"
-                        value={userData.email}
-                        onChange={handleInputChange}
-                    />
-                    <button onClick={handleNext}>Далее</button>
-                </div>
-            )}
-            {step === 2 && (
-                <div>
-                    <button onClick={handleBack}>Назад</button>
-                    <select>
-                        {/* Выбор языка */}
-                    </select>
-                    <button onClick={handleNext}>Далее</button>
-                </div>
-            )}
-            {step === 3 && (
-                <div>
-                    <button onClick={handleBack}>Назад</button>
-                    <input
-                        type="password"
-                        placeholder="Пароль"
-                        value={password.password1}
-                        onChange={() => handlePasswordChange(event, "password1")}
-                    />
-                    <input
-                        type="password"
-                        placeholder="Подтвердите пароль"
-                        value={password.password2}
-                        onChange={() => handlePasswordChange(event, "password2")}
-                    />
-                </div>
-            )}
+            <div>
+                <Image src={Logo} alt={"TGA"}/>
+            </div>
+            <h3 className="form-heading">Sign up</h3>
+            <div className="form-description mb-10">What are we working on today?</div>
+            {step === 1 && <FirstStep handleNext={handleNext}/>}
+            {step === 2 && <SecondStep handleNext={handleNext}/>}
+            {step === 3 && <ThirdStep/>}
+            <div className={"flex flex-col desktop:space-x-3 desktop:flex-row mt-6"}>
+                <div>Already have an account?</div>
+                <Link href={"login"}
+                    className={"cursor-pointer text-orange-500"}
+                >Log in</Link>
+            </div>
         </div>
     );
-};
+})
 
 export default RegistrationForm;

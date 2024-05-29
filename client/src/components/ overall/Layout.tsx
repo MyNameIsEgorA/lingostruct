@@ -1,4 +1,3 @@
-import {ReactNode} from "react";
 import NavBar from "@/components/NavBar/NavBar";
 
 interface LayoutProps {

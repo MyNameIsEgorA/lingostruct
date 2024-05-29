@@ -3,7 +3,7 @@ import {IUserLogin, IUserToken} from "@/types/User";
 
 const loginUserAPI = async (loginData: IUserLogin): Promise<string | IUserToken> => {
     try {
-        const response = await axios.post('http://127.0.0.1:8000/api/token/', {
+        const response = await axios.post('http://api.lingostruct.ru/api/token/', {
             username: loginData.email,
             password: loginData.password
         }, {
