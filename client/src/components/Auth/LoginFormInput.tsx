@@ -74,7 +74,7 @@ const LoginFormInput = () => {
                         <Link
                             className="text-[10px] desktop:text-[14px] text-orange-500 hover:text-orange-700 transition-[500ms]"
                             href={"register"}
-                        >Создать аккаунт</Link>
+                        >create account</Link>
                     </div>
                 </form>
             </div>

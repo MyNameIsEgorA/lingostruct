@@ -1,5 +1,5 @@
 import "./navBarMain.css"
-import {ReactNode, useState} from "react";
+import React, {ReactNode, useState} from "react";
 
 import IMG from "../../../public/Organization.svg"
 import Image from "next/image";
@@ -13,7 +13,7 @@ interface IProps {
 }
 
 export const DashBoard: React.FC<IProps> = observer(({organizations}): ReactNode => {
-    const [title, setTitle] = useState<string>(userStore.getActiveOrganization() !== "" ? userStore.getActiveOrganization : organizations[0].title)
+    const [title, setTitle] = useState<string>(userStore.getActiveOrganization() || organizations[0].title)
     const [showList, setShowList] = useState<boolean>(true)
 
     return (
