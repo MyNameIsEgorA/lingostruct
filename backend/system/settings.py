@@ -2,7 +2,6 @@ from pathlib import Path
 from datetime import timedelta
 import os
 
-
 from .secret_local import *
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,6 +26,8 @@ INSTALLED_APPS += [
     'django_filters',
     'corsheaders',
     'rest_framework_simplejwt',
+    'djoser',
+
     'profile_user',
 ]
 
@@ -63,10 +64,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
-# MIDDLEWARE += [
-#     'corsheaders.middleware.CorsMiddleware',
-# ]
 
 ROOT_URLCONF = 'system.urls'
 
@@ -121,7 +118,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, '/static')
-# STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
@@ -133,12 +130,12 @@ CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_HEADERS = ['*']
 CSRF_COOKIE_SECURE = False
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000/', '*',
-]
-CORS_ORIGIN_WHITELIST = [
-    'http://localhost:3000/', '*',
-]
+# CORS_ALLOWED_ORIGINS = [
+#     'http://localhost:3000/', '*',
+# ]
+# CORS_ORIGIN_WHITELIST = [
+#     'http://localhost:3000/', '*',
+# ]
 
 
 # DRF Spectacular
@@ -153,7 +150,7 @@ SPECTACULAR_SETTINGS = {
     ],
 
     'SERVE_AUTHENTICATION': [
-       # 'rest_framework.authentication.BasicAuthentication'
+        'rest_framework.authentication.BasicAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
 
@@ -208,3 +205,23 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
 }
 
+
+# EMAIL SEND
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_HOST_USER = EMAIL_HOST_USER
+EMAIL_HOST_PASSWORD = EMAIL_HOST_PASSWORD
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+# DJOISER
+
+# DJOSER = {
+#     'PASSWORD_RESET_CONFIRM_URL': '#/password/reset/confirm/{uid}/{token}',
+#     'USERNAME_RESET_CONFIRM_URL': '#/username/reset/confirm/{uid}/{token}',
+#     'ACTIVATION_URL': '#/activate/{uid}/{token}',
+#     'SEND_ACTIVATION_EMAIL': True,
+#     'SEND_CONFIRMATION_EMAIL': True,
+#
+# }
