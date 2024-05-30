@@ -3,34 +3,56 @@ import {makeAutoObservable} from "mobx";
 import type {
     IUserLanguage,
     IUserLogin,
-    IUserNavBar, IUserPassword,
+    IUserPassword,
     IUserRegisterContactInfo,
     IUserRegisterInfo,
     IUserToken
 } from "@/types/User";
-import {IOrganizationLink} from "@/types/Organizations";
+import type {INavBarInfo, IUserOrganizations, IUserProjects} from "@/types/Organizations";
 import loginUserAPI from "@/api/user/login";
-
-function onClientSide(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
-    const originalMethod = descriptor.value;
-
-    descriptor.value = function(...args: any[]) {
-        if (typeof localStorage !== 'undefined') {
-            return originalMethod.apply(this, args);
-        } else {
-            console.error('localStorage is not available');
-        }
-    };
-}
+import {onClientSide} from "@/helpers/decorators/clientSide";
 
 class UserStore {
+
+    private activeOrganization: string = ""
+    private chosenProject: IUserProjects | undefined = undefined;
 
     constructor() {
         makeAutoObservable(this)
         this.loadStateFromStorage()
     }
 
-    public activeOrganization: string = ""
+    private NavBarInfo: INavBarInfo = {
+        organizations: [
+            {
+                URL: "https://www.organization1.com",
+                title: "Organization 1"
+            },
+            {
+                URL: "https://www.organization2.com",
+                title: "Organization 2"
+            }
+        ],
+        activitiesAmount: 99,
+        projects: [
+            {
+                color: "#FF0000",
+                title: "Project 1",
+                URL: "https://www.project1.com"
+            },
+            {
+                color: "#00FF00",
+                title: "Project 2",
+                URL: "https://www.project2.com"
+            }
+        ],
+        user: {
+            image: "https://www.example.com/user.jpg",
+            name: "John Doe",
+            email: "john.doe@example.com"
+        }
+    };
+
     public status: string = "initial"
     private userRegisterData: IUserRegisterInfo = {
         email: "",
@@ -40,35 +62,20 @@ class UserStore {
         name: "",
     }
 
-    public async getNavBarData(): Promise<IUserNavBar | undefined> {
-        const organizationsList: IOrganizationLink[] = [{title: "Strabag", URL:"123"}, {title: "HH.RU", URL:"234"}, {title: "avito", URL:"2345"}]
-        try {
-            this.saveStateToStorage()
-            return {
-                organizations: organizationsList,
-                email: "eanahin8v@mail.ru",
-                activities: 99,
-                name: "Anakhin Egor",
-                projects: ["Постройка дома", "Постройка дачи"],
-            }
-        } catch (e) {
-            return undefined
-        }
-    }
-
-    public setActiveOrganization(organizationName: string): void {
+    public setActiveOrganization = (organizationName: string): void => {
         this.activeOrganization = organizationName;
         this.saveStateToStorage()
     }
 
-    public getActiveOrganization(): string {
+    public get getActiveOrganization(): string {
         return this.activeOrganization;
     }
 
     private saveStateToStorage(): void  {
         localStorage.setItem('UserStore', JSON.stringify({
             status: this.status,
-            activeOrganization: this.activeOrganization
+            activeOrganization: this.activeOrganization,
+            activeProject: this.activeProject
         }))
     }
 
@@ -87,6 +94,7 @@ class UserStore {
             const state = JSON.parse(storedState);
             this.status = state.status;
             this.activeOrganization = state.activeOrganization;
+            this.setActiveProject = state.activeProject
         }
     }
 
@@ -124,6 +132,23 @@ class UserStore {
 
     public get getUserRegisterData(): IUserRegisterInfo {
         return {...this.userRegisterData}
+    }
+
+    public get getOrganizations(): IUserOrganizations[] {
+        return this.NavBarInfo.organizations
+    }
+
+    public get activities_amount(): number {
+        return this.NavBarInfo.activitiesAmount
+    }
+
+    public get activeProject(): undefined | IUserProjects {
+        return this.chosenProject
+    }
+
+    public set setActiveProject(project: IUserProjects) {
+        this.chosenProject = project
+        this.saveStateToStorage()
     }
 
 }

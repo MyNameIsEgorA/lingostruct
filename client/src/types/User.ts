@@ -1,8 +1,8 @@
-import {IOrganizationLink} from "@/types/Organizations";
+import {IUserOrganizations} from "@/types/Organizations";
 
 
 export interface IUserNavBar {
-    organizations: IOrganizationLink[],
+    organizations: IUserOrganizations[],
     activities: Number,
     projects: string[],
     imageURL?: string,
