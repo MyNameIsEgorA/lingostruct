@@ -1,6 +1,6 @@
 import React, {ReactNode, useState} from "react";
 import {observer} from "mobx-react";
-import userStore from "@/stores/UserStore";
+import userStore from "@/stores/UserNavBarStore";
 import Icon from "@/../public/layers-outline.svg"
 import Image from "next/image";
 import Arrow from "../../../../public/arrow.svg";

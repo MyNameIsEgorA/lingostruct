@@ -2,11 +2,9 @@ import React, {useState} from "react";
 import {IUserRegisterContactInfo} from "@/types/User";
 import "../inputFields.css"
 import {observer} from "mobx-react";
-import userStore from "@/stores/UserStore";
+import userLoginStore from "@/stores/UserLoginStore";
 
 interface IProps {
-    // userData: IUserRegisterContactInfo,
-    // handleInputChange: (event: any) => void,
     handleNext: () => void,
 }
 
@@ -34,7 +32,7 @@ const FirstStep: React.FC<IProps> = observer(({handleNext}) => {
             )
         }
 
-        userStore.userRegisterContactInfo = userData
+        userLoginStore.userRegisterContactInfo = userData
     }
 
     return (

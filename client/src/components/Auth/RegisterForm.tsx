@@ -1,7 +1,6 @@
 "use client"
 
 import React, { useState } from 'react';
-import { IUserPassword, IUserRegisterContactInfo } from "@/types/User";
 import "./authForm.css"
 import FirstStep from "@/components/Auth/RegisterSteps/FirstStep";
 import Image from "next/image";
@@ -9,7 +8,7 @@ import Logo from "../../../public/TGA.png";
 import Link from "next/link";
 import SecondStep from "@/components/Auth/RegisterSteps/SecondStep";
 import {observer} from "mobx-react";
-import userStore from "@/stores/UserStore";
+import userLoginStore from "@/stores/UserLoginStore";
 import ThirdStep from "@/components/Auth/RegisterSteps/ThirdStep";
 
 
@@ -17,13 +16,13 @@ const RegistrationForm = observer(() => {
     const [step, setStep] = useState<number>(1);
 
     const handleNext = (): void => {
-        console.log(userStore.userLanguage, userStore.userRegisterContactInfo)
+        console.log(userLoginStore.userLanguage, userLoginStore.userRegisterContactInfo)
         if (step === 1) {
-            const {name, email} = userStore.userRegisterContactInfo
+            const {name, email} = userLoginStore.userRegisterContactInfo
             if (name !== "" && email != "") {
                 setStep(2);
             }
-        } else if (step === 2 && userStore.userLanguage.language !== "") {
+        } else if (step === 2 && userLoginStore.userLanguage.language !== "") {
             setStep(3);
         }
     };

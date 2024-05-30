@@ -1,6 +1,6 @@
 import {ReactNode, useEffect, useState} from "react";
 import {observer} from "mobx-react";
-import userStore from "@/stores/UserStore"
+import userStore from "@/stores/UserNavBarStore"
 import {IUserProjects} from "@/types/Organizations";
 
 const ProjectsList = observer((): ReactNode => {

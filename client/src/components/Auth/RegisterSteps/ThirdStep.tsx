@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {observer} from "mobx-react";
-import userStore from "@/stores/UserStore";
+import userLoginStore from "@/stores/UserLoginStore";
 import {IUserPassword} from "@/types/User";
 
 const ThirdStep = observer(() => {
@@ -12,7 +12,7 @@ const ThirdStep = observer(() => {
             ...prevPasswordData,
             [field]: e.target.value
         }));
-        userStore.userRegisterPasswords = passwordData;
+        userLoginStore.userRegisterPasswords = passwordData;
     };
 
     return (

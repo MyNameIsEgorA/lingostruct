@@ -5,7 +5,7 @@ import { observer } from "mobx-react"
 import "./navBarMain.css"
 import Logo from "../../../public/Logo.svg"
 import Image from "next/image";
-import userStore from "@/stores/UserStore";
+import userStore from "@/stores/UserNavBarStore";
 import {DashBoard} from "@/components/NavBar/DashBoard";
 import TasksImage from "../../../public/hammer-outline.svg";
 import Link from "next/link";

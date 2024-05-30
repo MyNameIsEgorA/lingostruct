@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { observer } from "mobx-react";
-import userStore from "@/stores/UserStore";
+import userLoginStore from "@/stores/UserLoginStore";
 
 interface IProps {
     handleNext: () => void,
@@ -24,9 +24,9 @@ const SecondStep: React.FC<IProps> = observer(({ handleNext }) => {
         const selectedLanguage = e.target.value;
         setLanguage(selectedLanguage);
         if (languagesList.includes(selectedLanguage)) {
-            userStore.userLanguage = selectedLanguage;
+            userLoginStore.userLanguage = selectedLanguage;
         } else {
-            userStore.userLanguage = ""
+            userLoginStore.userLanguage = ""
         }
     };
 

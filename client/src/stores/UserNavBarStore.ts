@@ -1,18 +1,10 @@
 import {makeAutoObservable} from "mobx";
 
-import type {
-    IUserLanguage,
-    IUserLogin,
-    IUserPassword,
-    IUserRegisterContactInfo,
-    IUserRegisterInfo,
-    IUserToken
-} from "@/types/User";
+
 import type {INavBarInfo, IUserOrganizations, IUserProjects} from "@/types/Organizations";
-import loginUserAPI from "@/api/user/login";
 import {onClientSide} from "@/helpers/decorators/clientSide";
 
-class UserStore {
+class UserNavBarStore {
 
     private activeOrganization: string = ""
     private chosenProject: IUserProjects | undefined = undefined;
@@ -54,13 +46,6 @@ class UserStore {
     };
 
     public status: string = "initial"
-    private userRegisterData: IUserRegisterInfo = {
-        email: "",
-        password1: "",
-        password2: "",
-        language: "",
-        name: "",
-    }
 
     public setActiveOrganization = (organizationName: string): void => {
         this.activeOrganization = organizationName;
@@ -80,14 +65,6 @@ class UserStore {
     }
 
     @onClientSide
-    private saveTokenToStorage(tokensData: IUserToken): void {
-        localStorage.setItem('UserToken', JSON.stringify({
-            access: tokensData.access,
-            refresh: tokensData.refresh,
-        }))
-    }
-
-    @onClientSide
     private loadStateFromStorage(): void {
         const storedState: string | null = localStorage.getItem('UserStore');
         if (storedState) {
@@ -96,42 +73,6 @@ class UserStore {
             this.activeOrganization = state.activeOrganization;
             this.setActiveProject = state.activeProject
         }
-    }
-
-    @onClientSide
-    public async loginUser(loginData: IUserLogin): Promise<string | undefined>  {
-        const response: string | IUserToken = await loginUserAPI(loginData)
-        if (typeof response == "string") {
-            return undefined
-        }
-        this.saveTokenToStorage(response)
-        return "cool"
-    }
-
-    public set userRegisterContactInfo({name, email}: IUserRegisterContactInfo) {
-        this.userRegisterData.name = name;
-        this.userRegisterData.email = email;
-    }
-
-    public get userRegisterContactInfo(): IUserRegisterContactInfo {
-        return {name: this.userRegisterData.name, email: this.userRegisterData.email}
-    }
-
-    public get userLanguage(): IUserLanguage {
-        return {language: this.userRegisterData.language}
-    }
-
-    public set userLanguage(language: string) {
-        this.userRegisterData.language = language;
-    }
-
-    public set userRegisterPasswords({password1, password2}: IUserPassword) {
-        this.userRegisterData.password1 = password1
-        this.userRegisterData.password2 = password2
-    }
-
-    public get getUserRegisterData(): IUserRegisterInfo {
-        return {...this.userRegisterData}
     }
 
     public get getOrganizations(): IUserOrganizations[] {
@@ -154,5 +95,5 @@ class UserStore {
 }
 
 
-const userStore: UserStore = new UserStore()
+const userStore: UserNavBarStore = new UserNavBarStore()
 export default userStore;
