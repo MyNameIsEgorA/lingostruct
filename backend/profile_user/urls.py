@@ -11,6 +11,8 @@ urlpatterns = [
     path('profile/<int:pk>/', ProfileDetail.as_view()),
     path('register/', UserRegistration.as_view()),
     path('confirm_registration/<str:profile_token>/', ConfirmRegistration.as_view()),
+    path('set_new_password/<int:pk>/', ChangePassword.as_view()),
+    path('resend_confirm_email/<str:profile_email>/', ResendEmailConfirm.as_view()),
 ]
 
 urlpatterns += doc_urls

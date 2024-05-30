@@ -48,9 +48,8 @@ def create_user_profile(sender, instance, created, **kwargs):
         # send_mail
         subject = profile.user.username
         message = (f'Для подтверждения почты перейдите: '
-                   f'http://127.0.0.1:8000/user/register_verify/{profile.verify_token}')
+                   f'http://127.0.0.1:8000/api/profile/confirm_registration/{profile.verify_token}')
         send_mail(subject, message, settings.EMAIL_HOST_USER, [profile.user.email], fail_silently=False)
-
 
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
