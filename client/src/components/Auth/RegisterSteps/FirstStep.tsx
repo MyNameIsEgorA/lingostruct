@@ -1,74 +1,83 @@
-import React, {useState} from "react";
-import {IUserRegisterContactInfo} from "@/types/User";
-import "../inputFields.css"
-import {observer} from "mobx-react";
-import userLoginStore from "@/stores/UserLoginStore";
+import React, { useState } from "react";
+import { IUserRegisterContactInfo } from "@/types/User";
+import "../inputFields.css";
+import { observer } from "mobx-react";
+import userAuthStore from "@/stores/UserAuthStore";
+import { emailValidation, fullNameValidation } from "@/helpers/registration/validations";
 
 interface IProps {
-    handleNext: () => void,
+    handleNext: () => void;
 }
 
-
-const FirstStep: React.FC<IProps> = observer(({handleNext}) => {
-
+const FirstStep: React.FC<IProps> = observer(({ handleNext }) => {
     const [userData, setUserData] = useState<IUserRegisterContactInfo>({
         name: "",
         email: "",
-    })
+    });
 
-    const handleInputChange = (event: any): void => {
-        const name = event.target.name;
-        const value = event.target.value;
+    const [errors, setErrors] = useState<{ name: string; email: string }>({
+        name: "",
+        email: "",
+    });
 
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+        const { name, value } = event.target;
+        const newUserData = { ...userData, [name]: value };
+        setUserData(newUserData);
+
+        let newErrors = { ...errors };
         if (name === "name") {
-            setUserData(
-                {...userData, name: value}
-            )
+            newErrors.name = fullNameValidation(value) ? "" : "Invalid full name, example: 'Robert Paulson'";
         }
 
         if (name === "email") {
-            setUserData(
-                {...userData, email: value}
-            )
+            newErrors.email = emailValidation(value) ? "" : "Invalid email";
         }
 
-        userLoginStore.userRegisterContactInfo = userData
-    }
+        setErrors(newErrors);
+        userAuthStore.userRegisterContactInfo = newUserData;
+    };
 
     return (
         <>
             <div className={"desktop:w-[344px]"}>
-                <div>
-                    <h4 className="block text-gray-900 text-[14px] mb-1">
-                        Full name
-                    </h4>
-                    <input className={"input-field"}
-                           type="text"
-                           name="name"
-                           placeholder="Enter name"
-                           value={userData.name}
-                           onChange={handleInputChange}
+                <div className={`input-container ${errors.name ? 'input-container-error' : ''}`}>
+                    <h4 className="block text-gray-900 text-[14px] mb-1">Full name</h4>
+                    <input
+                        className={"input-field"}
+                        type="text"
+                        name="name"
+                        placeholder="Enter name"
+                        value={userData.name}
+                        onChange={handleInputChange}
                     />
+                    {errors.name && <p className="error-message">{errors.name}</p>}
                 </div>
-                <div className="mt-5">
-                    <h4 className="block text-gray-900 text-[14px] mb-1">
-                        Email
-                    </h4>
-                    <input className={"input-field"}
-                           type="email"
-                           name="email"
-                           placeholder="Enter email"
-                           value={userData.email}
-                           onChange={handleInputChange}
+                <div className={`mt-9 input-container ${errors.email ? 'input-container-error' : ''}`}>
+                    <h4 className="block text-gray-900 text-[14px] mb-1">Email</h4>
+                    <input
+                        className={"input-field"}
+                        type="email"
+                        name="email"
+                        placeholder="Enter email"
+                        value={userData.email}
+                        onChange={handleInputChange}
                     />
+                    {errors.email && <p className="error-message">{errors.email}</p>}
                 </div>
                 <button
-                    onClick={handleNext}
+                    onClick={() => {
+                        if (Object.values(errors).every((error) => error === "")) {
+                            handleNext();
+                        }
+                    }}
                     className="submit-button"
-                >Далее</button>
+                >
+                    Далее
+                </button>
             </div>
         </>
-    )
-})
+    );
+});
 
-export default FirstStep
+export default FirstStep;

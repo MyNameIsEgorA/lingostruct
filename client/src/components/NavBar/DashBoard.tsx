@@ -25,7 +25,7 @@ export const DashBoard: React.FC<IProps> = ({activeOrganization, setActiveOrgani
             setTitle(activeOrganization)
             return
         }
-        setTitle(organizations[0].title)
+        setTitle(organizations[0]?.title || "No organization")
     }, []);
 
     return (
@@ -33,9 +33,9 @@ export const DashBoard: React.FC<IProps> = ({activeOrganization, setActiveOrgani
             <div className="organization flex items-center justify-between ">
                 <div className={"flex items-center space-x-4"}>
                     <Image src={IMG} alt={"Организация"} className="w-10 bg-[#F0F3F60f] p-2 rounded-lg"/>
-                    <h3 className={"text-[18px]"}>{
-                        title
-                    }</h3>
+                    <h3 className={"text-[18px]"}>
+                        {title}
+                    </h3>
                 </div>
                 <button onClick={() => {setShowList(!showList)}} className={"pr-"}>
                     <Image src={Arrow} alt={"arrow"} className={`w-4 transition-[500ms] ${showList ? "transform -rotate-180" : ""}`}></Image>

@@ -5,12 +5,13 @@ import { observer } from "mobx-react"
 import "./navBarMain.css"
 import Logo from "../../../public/Logo.svg"
 import Image from "next/image";
-import userStore from "@/stores/UserNavBarStore";
+import userNavBarStore from "@/stores/UserNavBarStore";
 import {DashBoard} from "@/components/NavBar/DashBoard";
-import TasksImage from "../../../public/hammer-outline.svg";
+import TasksImage from "@/../public/hammer-outline.svg";
 import Link from "next/link";
 import Activities from "@/components/NavBar/Activities";
 import Projects from "@/components/NavBar/Projects/Projects";
+import NavUserInfo from "@/components/NavBar/UserInfo/NavUserInfo";
 
 const NavBar = observer(() => {
     const [isDesktop, setIsDesktop] = useState<boolean>(true)
@@ -30,7 +31,7 @@ const NavBar = observer(() => {
     });
 
     return (
-        <nav className={"navbar text-[18px] text-white"}>
+        <nav className={"navbar text-[18px] text-white flex flex-col"}>
             <div className="p-5 desktop:p-0 mobile-nav flex justify-between items-center">
                 <Image src={Logo} alt="TGA" className="logo"/>
                 {!isDesktop && <div
@@ -42,20 +43,23 @@ const NavBar = observer(() => {
                     +
                 </div>}
             </div>
-            {(isDesktop || showNavBar) && <div className={"px-4 desktop:px-0"}>
-                <DashBoard organizations={userStore.getOrganizations}
-                           activeOrganization={userStore.getActiveOrganization}
-                           setActiveOrganization={userStore.setActiveOrganization}
+            {(isDesktop || showNavBar) && <div className={"flex-col flex px-4 h-full desktop:px-0"}>
+                <DashBoard organizations={userNavBarStore.getOrganizations}
+                           activeOrganization={userNavBarStore.getActiveOrganization}
+                           setActiveOrganization={userNavBarStore.setActiveOrganization}
                 />
                 <div className={"h-[2px] w-full bg-gray-500 my-4"}></div>
                 <div className={"flex"}>
                     <Image src={TasksImage} alt={"tasks"} className={"w-7"}/>
                     <Link href={"tasks"} className={"ml-3"}>My Tasks</Link>
                 </div>
-                <Activities activitiesAmount={userStore.activities_amount}/>
+                <Activities activitiesAmount={userNavBarStore.activities_amount}/>
                 <Projects/>
             </div>
             }
+            {(isDesktop || showNavBar) && <div className={"flex-grow-[1]"}>
+                <NavUserInfo/>
+            </div>}
         </nav>
     );
 });

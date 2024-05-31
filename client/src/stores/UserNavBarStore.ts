@@ -1,13 +1,13 @@
 import {makeAutoObservable} from "mobx";
 
 
-import type {INavBarInfo, IUserOrganizations, IUserProjects} from "@/types/Organizations";
+import type {INavBarInfo, IUserNavBarData, IUserOrganizations, IUserProject} from "@/types/Organizations";
 import {onClientSide} from "@/helpers/decorators/clientSide";
 
 class UserNavBarStore {
 
     private activeOrganization: string = ""
-    private chosenProject: IUserProjects | undefined = undefined;
+    private activeProject: IUserProject = {title: "", color: "", URL: ""};
 
     constructor() {
         makeAutoObservable(this)
@@ -39,9 +39,9 @@ class UserNavBarStore {
             }
         ],
         user: {
-            image: "https://www.example.com/user.jpg",
-            name: "John Doe",
-            email: "john.doe@example.com"
+            email: "john.doe@example.com",
+            image: 'http://api.lingostruct.ru/media/profile/admin/3yqmiiq8ejjgjki0ws5qn872enbdaj1c.jpg',
+            name: "John Doe"
         }
     };
 
@@ -71,7 +71,7 @@ class UserNavBarStore {
             const state = JSON.parse(storedState);
             this.status = state.status;
             this.activeOrganization = state.activeOrganization;
-            this.setActiveProject = state.activeProject
+            this.activeProject = state.activeProject
         }
     }
 
@@ -83,17 +83,25 @@ class UserNavBarStore {
         return this.NavBarInfo.activitiesAmount
     }
 
-    public get activeProject(): undefined | IUserProjects {
-        return this.chosenProject
+    public get getActiveProject(): IUserProject {
+        return this.activeProject
     }
 
-    public set setActiveProject(project: IUserProjects) {
-        this.chosenProject = project
+    public setActiveProject = (project: IUserProject): void => {
+        this.activeProject = project
         this.saveStateToStorage()
+    }
+
+    public get projectsList(): IUserProject[] {
+        return this.NavBarInfo.projects
+    }
+
+    public get userInfo(): IUserNavBarData {
+        return this.NavBarInfo.user
     }
 
 }
 
 
-const userStore: UserNavBarStore = new UserNavBarStore()
-export default userStore;
+const userNavBarStore: UserNavBarStore = new UserNavBarStore()
+export default userNavBarStore;

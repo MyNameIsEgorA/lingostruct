@@ -3,15 +3,16 @@ import {makeAutoObservable} from "mobx";
 import type {
     IUserLanguage,
     IUserLogin,
-    IUserPassword,
+    IUserPassword, IUserRegister,
     IUserRegisterContactInfo,
     IUserRegisterInfo,
     IUserToken
 } from "@/types/User";
 import loginUserAPI from "@/api/user/login";
 import {onClientSide} from "@/helpers/decorators/clientSide";
+import registerUserAPI from "@/api/user/register";
 
-class UserLoginStore {
+class UserAuthStore {
 
     constructor() {
         makeAutoObservable(this)
@@ -43,6 +44,11 @@ class UserLoginStore {
         return "cool"
     }
 
+    @onClientSide
+    public async registerUser(): Promise<boolean> {
+        return await registerUserAPI(this.userRegisterData)
+    }
+
     public set userRegisterContactInfo({name, email}: IUserRegisterContactInfo) {
         this.userRegisterData.name = name;
         this.userRegisterData.email = email;
@@ -71,5 +77,5 @@ class UserLoginStore {
 }
 
 
-const userLoginStore: UserLoginStore = new UserLoginStore()
-export default userLoginStore;
+const userAuthStore: UserAuthStore = new UserAuthStore()
+export default userAuthStore;

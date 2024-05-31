@@ -8,7 +8,7 @@ import Logo from "../../../public/TGA.png";
 import Link from "next/link";
 import SecondStep from "@/components/Auth/RegisterSteps/SecondStep";
 import {observer} from "mobx-react";
-import userLoginStore from "@/stores/UserLoginStore";
+import userAuthStore from "@/stores/UserAuthStore";
 import ThirdStep from "@/components/Auth/RegisterSteps/ThirdStep";
 
 
@@ -16,13 +16,13 @@ const RegistrationForm = observer(() => {
     const [step, setStep] = useState<number>(1);
 
     const handleNext = (): void => {
-        console.log(userLoginStore.userLanguage, userLoginStore.userRegisterContactInfo)
+        console.log(userAuthStore.userLanguage, userAuthStore.userRegisterContactInfo)
         if (step === 1) {
-            const {name, email} = userLoginStore.userRegisterContactInfo
+            const {name, email} = userAuthStore.userRegisterContactInfo
             if (name !== "" && email != "") {
                 setStep(2);
             }
-        } else if (step === 2 && userLoginStore.userLanguage.language !== "") {
+        } else if (step === 2 && userAuthStore.userLanguage.language !== "") {
             setStep(3);
         }
     };

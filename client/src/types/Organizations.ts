@@ -3,7 +3,7 @@ export interface IUserOrganizations {
     title: string
 }
 
-export interface IUserProjects {
+export interface IUserProject {
     color: string,
     title: string,
     URL: string,
@@ -18,6 +18,6 @@ export interface IUserNavBarData {
 export interface INavBarInfo {
     organizations: IUserOrganizations[],
     activitiesAmount: number,
-    projects: IUserProjects[],
+    projects: IUserProject[],
     user: IUserNavBarData
 }
