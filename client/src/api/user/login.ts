@@ -9,7 +9,6 @@ const loginUserAPI = async (loginData: IUserLogin): Promise<string | IUserToken>
         }, {
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRFTOKEN': 'yK6HruoSIthkI2pnlIPQ0VbEfw6mOqB4MEWbMEs9XKoBEvj1Qf22FyAJMKUs3qqb'
             }
         });
         return {access: response.data.access, refresh: response.data.refresh};

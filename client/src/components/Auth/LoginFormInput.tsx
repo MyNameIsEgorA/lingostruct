@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import "./inputFields.css";
 import { IUserLogin } from "@/types/User";
-import userStore from "@/stores/UserStore";
+import userAuthStore from "@/stores/UserAuthStore";
 import Link from "next/link";
 
 const LoginFormInput = () => {
@@ -27,7 +27,7 @@ const LoginFormInput = () => {
     const submit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            const response: string | undefined = await userStore.loginUser(loginData);
+            const response: string | undefined = await userAuthStore.loginUser(loginData);
             if (typeof response === "string") {
                 window.location.href = '/';
             }

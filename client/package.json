@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.4.2",
+    "@types/react-modal": "^3.16.3",
     "axios": "^1.7.2",
     "mobx": "^6.12.3",
     "mobx-react": "^9.1.1",
@@ -18,6 +19,7 @@
     "react": "^18",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.51.5",
+    "react-modal": "^3.16.1",
     "reflect-metadata": "^0.2.2",
     "yup": "^1.4.0"
   },

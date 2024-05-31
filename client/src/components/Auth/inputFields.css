@@ -56,3 +56,18 @@ option {
 option:hover {
     background-color: black;
 }
+
+.input-container {
+    transition: height 0.3s ease;
+}
+
+.input-container-error {
+    height: 70px; /* Примерное значение, которое позволит вместить сообщение об ошибке */
+}
+
+.error-message {
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+    margin-bottom: 3px;
+}

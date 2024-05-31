@@ -1,8 +1,8 @@
-import {IOrganizationLink} from "@/types/Organizations";
+import {IUserOrganizations} from "@/types/Organizations";
 
 
 export interface IUserNavBar {
-    organizations: IOrganizationLink[],
+    organizations: IUserOrganizations[],
     activities: Number,
     projects: string[],
     imageURL?: string,
@@ -14,6 +14,11 @@ export interface IUserNavBar {
 export interface IUserLogin {
     email: string;
     password: string;
+}
+
+export interface IUserRegister extends IUserLogin {
+    password2: string,
+    username: string,
 }
 
 
