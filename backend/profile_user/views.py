@@ -11,6 +11,7 @@ from django.contrib.auth import get_user_model
 from .serializers import ProfileSerializer, UserRegistrationSerializer, ChangePasswordSerializer
 from .permissions import IsUserProfileOrReadOnly
 
+
 User = get_user_model()
 
 
@@ -55,3 +56,14 @@ class ResendEmailConfirm(views.APIView):
                    f'http://127.0.0.1:8000/api/profile/confirm_registration/{profile.verify_token}')
         send_mail(subject, message, settings.EMAIL_HOST_USER, [profile.user.email], fail_silently=False)
         return Response({'detail': 'Сообщение отправлено'})
+
+
+class GetOneProfile(views.APIView):
+    def get(self, *args, **kwargs):
+        data = {'user': 'test_user1',
+                'email': 'test_email1@email.ru',
+                'image': 'lingostruct.ru/blabla.jpg',
+                'name': 'Test Testovich'
+                }
+        return Response({'detail': data})
+

@@ -2,7 +2,7 @@
 venv
 .venv
 # Папки кэша
-.idea
+*.idea
 backend/__pycache__
 
 # Файлы для личного пользования
