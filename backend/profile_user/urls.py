@@ -16,5 +16,3 @@ urlpatterns = [
 
     path('test/', GetOneProfile.as_view()),
 ]
-
-urlpatterns += doc_urls
