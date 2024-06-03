@@ -31,6 +31,9 @@ class UserRegistration(generics.CreateAPIView):
     serializer_class = UserRegistrationSerializer
     permission_classes = [AllowAny]
 
+    # def post(self, request, *args, **kwargs):
+    #     убрать body после регистрации
+
 
 class ConfirmRegistration(views.APIView):
 
@@ -63,7 +66,20 @@ class GetOneProfile(views.APIView):
         data = {'user': 'test_user1',
                 'email': 'test_email1@email.ru',
                 'image': 'lingostruct.ru/blabla.jpg',
-                'name': 'Test Testovich'
-                }
+                'name': 'Test Testovich',
+                'organizations': [
+                    {
+                        'url': 'http://lingostruct.ru/blabla/',
+                        'title': 'test test test',
+                    },
+                    {
+                        'url': 'http://lingostruct.ru/blabla/nana/',
+                        'title': 'nana nana nana'
+                    },
+                ],
+                'http': 'lingostruct.ru',
+                'project': 'API Test single data',
+
+        },
         return Response({'detail': data})
 
