@@ -10,7 +10,7 @@ SECRET_KEY = 'django-insecure-4d8otobg*_cs=-t71uv2oh!q!g9q9v7ojd%b)flmx_a@u$og-k
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['api.lingostruct.ru']
+ALLOWED_HOSTS = ['api.lingostruct.ru', '*']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -28,6 +28,7 @@ INSTALLED_APPS += [
     'rest_framework_simplejwt',
 
     'profile_user',
+    'task_manager',
 ]
 
 # after apps
@@ -94,6 +95,10 @@ DATABASES = {
         'PORT': 5432,
     }
 }
+
+AUTHENTICATION_BACKENDS = [
+    'profile_user.backends.UserModelBackend'
+]
 
 AUTH_PASSWORD_VALIDATORS = [
     {
