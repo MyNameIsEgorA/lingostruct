@@ -9,8 +9,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-4d8otobg*_cs=-t71uv2oh!q!g9q9v7ojd%b)flmx_a@u$og-k'
 
 DEBUG = True
-# 'api.lingostruct.ru',
-ALLOWED_HOSTS = ['*']
+
+ALLOWED_HOSTS = ['api.lingostruct.ru']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -129,12 +129,12 @@ CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_HEADERS = ['*']
 CSRF_COOKIE_SECURE = False
-# CORS_ALLOWED_ORIGINS = [
-#     'http://localhost:3000/', '*',
-# ]
-# CORS_ORIGIN_WHITELIST = [
-#     "http://localhost:3000/"
-# ]
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000/', '*',
+]
+CORS_ORIGIN_WHITELIST = [
+    "http://localhost:3000/"
+]
 
 
 # DRF Spectacular
