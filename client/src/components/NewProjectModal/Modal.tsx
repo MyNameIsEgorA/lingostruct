@@ -1,14 +1,24 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import Modal from 'react-modal';
 import Image from "next/image";
-import CloseImage from "@/../public/Delete.svg"
+import CloseImage from "@/../public/Delete.svg";
+import Calendar from "@/components/NewProjectModal/Calendar";
+import { observer } from "mobx-react";
+import projectInfoModalStore from "@/stores/ProjectInfoModalStore";
+import "./modal.css";
+import DateImage from "@/../public/dateImage.svg";
+import FirstLayer from "@/components/NewProjectModal/FirstLayer";
+import SecondLayer from "@/components/NewProjectModal/SecondLayer";
 
 interface NewProjectModalProps {
     isOpen: boolean;
     onClose: () => void;
 }
 
-const NewProjectModal: React.FC<NewProjectModalProps> = ({ isOpen, onClose }) => {
+Modal.setAppElement("#app");
+
+const NewProjectModal: React.FC<NewProjectModalProps> = observer(({ isOpen, onClose }) => {
+
     const customStyles = {
         content: {
             top: '50%',
@@ -20,6 +30,7 @@ const NewProjectModal: React.FC<NewProjectModalProps> = ({ isOpen, onClose }) =>
             padding: 32,
             width: 518,
             borderRadius: 12,
+            minHeight: 600,
         },
         overlay: {
             backgroundColor: 'rgba(0, 0, 0, 0.3)', // Серая прозрачная тень
@@ -36,12 +47,14 @@ const NewProjectModal: React.FC<NewProjectModalProps> = ({ isOpen, onClose }) =>
             <div className={"flex justify-between"}>
                 <h2 className={"text-[18px]"}>Create new project</h2>
                 <button onClick={onClose}>
-                    <Image src={CloseImage} alt={"Close creating new project"}/>
+                    <Image src={CloseImage} alt={"Close creating new project"} />
                 </button>
             </div>
             <div className="mt-2 text-[#79828B]">Add project information here</div>
+            <FirstLayer />
+            <SecondLayer />
         </Modal>
     );
-};
+});
 
 export default NewProjectModal;

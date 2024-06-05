@@ -1,11 +1,11 @@
-import {makeAutoObservable} from "mobx";
-import {IProjectModal} from "@/types/Project";
+import {makeAutoObservable, reaction} from "mobx";
+import type {IProjectModal} from "@/types/Project";
 import {onClientSide} from "@/helpers/decorators/clientSide";
-
+import {startOfToday} from "date-fns";
 
 class ProjectInfoModalStore {
 
-    private ProjectData: IProjectModal = {
+    public ProjectData: IProjectModal = {
         projectName: "",
         projectCode: "",
         color: "#000000",
@@ -17,32 +17,48 @@ class ProjectInfoModalStore {
 
     constructor() {
         makeAutoObservable(this)
-        this.getDataFromSessionStorage()
+        this.loadStateFromStorage()
+        reaction(() => JSON.stringify(this.ProjectData), (newProjectDataJSON: string): void => {
+            if (newProjectDataJSON !== null) {
+                this.saveStateToStorage()
+            }
+            console.log(this.ProjectData)
+        })
     }
 
     @onClientSide
-    private setDataInSessionStorage(): void {
+    protected saveStateToStorage(): void {
         sessionStorage.setItem("newProjectData", JSON.stringify(this.ProjectData))
     }
 
     @onClientSide
-    private getDataFromSessionStorage(): void {
+    protected loadStateFromStorage(): void {
         const data: string | null = sessionStorage.getItem("newProjectData")
         if (data) {
-            this.ProjectData = JSON.parse(data)
+            const parsedData = JSON.parse(data)
+            if (parsedData.startDate) {
+                parsedData.startDate = new Date(parsedData.startDate)
+            }
+            if (parsedData.endDate) {
+                parsedData.endDate = new Date(parsedData.endDate)
+            }
+            this.ProjectData = parsedData
         }
     }
 
     public get projectName(): string {
         return this.ProjectData.projectName
     }
+    public get projectCode(): string {
+        return this.ProjectData.projectCode
+    }
     public get projectColor(): string {
         return this.ProjectData.projectCode
     }
     public get startDate(): Date {
-        return this.ProjectData.startDate
+        return new Date(this.ProjectData.startDate)
     }
-    public get endDate(): Date {
+    public get endDate(): Date | null {
         return this.ProjectData.endDate
     }
     public get projectDescription(): string {
@@ -54,28 +70,31 @@ class ProjectInfoModalStore {
     public get projectData(): IProjectModal {
         return this.ProjectData
     }
-    public set setProjectName(name: string) {
+
+    public setProjectName(name: string): void {
         this.ProjectData.projectName = name
     }
-    public set setProjectCode(code: string) {
+    public setProjectCode(code: string) {
         this.ProjectData.projectCode = code
     }
-    public set setProjectColor(color: string) {
+    public setProjectColor(color: string) {
         this.ProjectData.color = color
     }
-    public set setStartDate(date: Date) {
+    public setStartDate = (date: Date): void => {
         this.ProjectData.startDate = date
+        console.log(date)
     }
-    public set setEndDate(date: Date) {
+    public setEndDate = (date: Date): void => {
+        console.log(date)
         this.ProjectData.endDate = date
     }
-    public set setDescription(description: string) {
-        this.ProjectData.color = description
+    public setDescription(description: string) {
+        this.ProjectData.projectDescription = description
     }
-    public set setCost(cost: string) {
+    public setCost(cost: string) {
         this.ProjectData.projectCost = cost
     }
-    public set setProjectData(data: IProjectModal) {
+    public setProjectData(data: IProjectModal) {
         this.ProjectData = data;
     }
 
