@@ -134,6 +134,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_HEADERS = ['*']
 CSRF_COOKIE_SECURE = False
+# Для лайв сервера вкл
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000/', '*',
 ]
