@@ -1,0 +1,32 @@
+.modal-section {
+    padding: 10px 14px;
+    background: #F0F3F6;
+    font-size: 16px;
+    display: flex;
+    color: #202F3D;
+    border-radius: 8px;
+    outline-color: #FB6A18;
+}
+
+.modal-section::placeholder {
+    color: #79828B;
+}
+
+.color {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+}
+
+.colors-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 16px;
+    padding: 16px;
+    border-radius: 8px;
+}
+
+/*.hide-overflow {*/
+/*    overflow-y: hidden;*/
+/*}*/

@@ -3,6 +3,9 @@ import {makeAutoObservable} from "mobx";
 
 import type {INavBarInfo, IUserNavBarData, IUserOrganizations, IUserProject} from "@/types/Organizations";
 import {onClientSide} from "@/helpers/decorators/clientSide";
+// import {authAxiosRequest} from "@/helpers/requests/authAxiosRequest";
+import {AxiosInstance, AxiosResponse} from "axios";
+import {IUserNavBar} from "@/types/User";
 
 class UserNavBarStore {
 
@@ -12,6 +15,7 @@ class UserNavBarStore {
     constructor() {
         makeAutoObservable(this)
         this.loadStateFromStorage()
+        // this.getApiData()
     }
 
     private NavBarInfo: INavBarInfo = {
@@ -47,6 +51,17 @@ class UserNavBarStore {
 
     public status: string = "initial"
 
+    // private getApiData = async (): Promise<void> => {
+    //     const instance: false | AxiosInstance = await authAxiosRequest()
+    //     if (!instance) {
+    //         console.log("ERROR IN `public getApiData: no token`")
+    //         return;
+    //     }
+    //     const data: any = await instance.get("/profile/test")
+    //     // this.setNavBarInfo(data.data.detail[0])
+    //     console.log(data.data.detail[0])
+    // }
+
     public setActiveOrganization = (organizationName: string): void => {
         this.activeOrganization = organizationName;
         this.saveStateToStorage()
@@ -56,6 +71,7 @@ class UserNavBarStore {
         return this.activeOrganization;
     }
 
+    @onClientSide
     private saveStateToStorage(): void  {
         localStorage.setItem('UserStore', JSON.stringify({
             status: this.status,
@@ -78,26 +94,24 @@ class UserNavBarStore {
     public get getOrganizations(): IUserOrganizations[] {
         return this.NavBarInfo.organizations
     }
-
     public get activities_amount(): number {
         return this.NavBarInfo.activitiesAmount
     }
-
     public get getActiveProject(): IUserProject {
         return this.activeProject
     }
-
     public setActiveProject = (project: IUserProject): void => {
         this.activeProject = project
         this.saveStateToStorage()
     }
-
     public get projectsList(): IUserProject[] {
         return this.NavBarInfo.projects
     }
-
     public get userInfo(): IUserNavBarData {
         return this.NavBarInfo.user
+    }
+    public setNavBarInfo(data: INavBarInfo): void {
+        this.NavBarInfo = data
     }
 
 }

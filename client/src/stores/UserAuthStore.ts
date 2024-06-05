@@ -28,7 +28,7 @@ class UserAuthStore {
 
     @onClientSide
     private saveTokenToStorage(tokensData: IUserToken): void {
-        localStorage.setItem('UserToken', JSON.stringify({
+        sessionStorage.setItem('UserToken', JSON.stringify({
             access: tokensData.access,
             refresh: tokensData.refresh,
         }))
