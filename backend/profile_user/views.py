@@ -11,7 +11,6 @@ from django.contrib.auth import get_user_model
 from .serializers import ProfileSerializer, UserRegistrationSerializer, ChangePasswordSerializer
 from .permissions import IsUserProfileOrReadOnly
 
-
 User = get_user_model()
 
 
@@ -63,23 +62,35 @@ class ResendEmailConfirm(views.APIView):
 
 class GetOneProfile(views.APIView):
     def get(self, *args, **kwargs):
-        data = {'user': 'test_user1',
-                'email': 'test_email1@email.ru',
-                'image': 'lingostruct.ru/blabla.jpg',
-                'name': 'Test Testovich',
-                'organizations': [
-                    {
-                        'url': 'http://lingostruct.ru/blabla/',
-                        'title': 'test test test',
-                    },
-                    {
-                        'url': 'http://lingostruct.ru/blabla/nana/',
-                        'title': 'nana nana nana'
-                    },
-                ],
-                'http': 'lingostruct.ru',
-                'project': 'API Test single data',
+        data = {'user': {
+            'email': 'test_email1@email.ru',
+            'image': 'lingostruct.ru/blabla.jpg',
+            'name': 'Test Testovich',
+            },
+            'activitoesAmount': 99,
+            'organizations': [
+                {
+                    'url': 'http://lingostruct.ru/blabla/',
+                    'title': 'test test test',
+                },
+                {
+                    'url': 'http://lingostruct.ru/blabla/nana/',
+                    'title': 'nana nana nana'
+                },
+            ],
+            'http': 'lingostruct.ru',
+            'projects': [
+                {
+                    'title': 'API Test single data',
+                    'color': '#FFF0000',
+                    'url': 'lingostruct.ru/project1'
+                },
+                {
+                    'title': 'Project for testing',
+                    'color': '#00FF00',
+                    'url': 'lingostruct.ru/project2'
+                }
+            ],
 
         },
         return Response({'detail': data})
-

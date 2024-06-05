@@ -3,7 +3,10 @@ venv
 .venv
 # Папки кэша
 *.idea
+
 backend/__pycache__
+backend/__pycache__/*
+backend/system/__pycache__
 
 # Файлы для личного пользования
 backend/system/secret_local.py
