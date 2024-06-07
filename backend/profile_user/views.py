@@ -1,4 +1,5 @@
 from django.shortcuts import render
+import jwt
 from rest_framework import generics, views
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
@@ -61,12 +62,12 @@ class ResendEmailConfirm(views.APIView):
 
 
 class GetOneProfile(views.APIView):
-    def get(self, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
         data = {'user': {
             'email': 'test_email1@email.ru',
             'image': 'lingostruct.ru/blabla.jpg',
             'name': 'Test Testovich',
-            },
+        },
             'activitoesAmount': 99,
             'organizations': [
                 {
@@ -91,6 +92,5 @@ class GetOneProfile(views.APIView):
                     'url': 'lingostruct.ru/project2'
                 }
             ],
-
         },
         return Response({'detail': data})

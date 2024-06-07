@@ -2,6 +2,9 @@ from rest_framework.views import Response
 from rest_framework import generics
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 
+import jwt
+from django.conf import settings
+
 from .serializers import ListOrganizationSerializer, CreateOrganizationSerializer
 from .models import Organization
 
@@ -24,15 +27,19 @@ class MyOrganizations(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
-        organization = Organization.objects.filter(creator__email=request.user.email)
-        serializer = ListOrganizationSerializer(instance=organization, many=True)
+        token = str(request.headers.get('Authorization')).split(' ')[1]
+        decode_token = jwt.decode(jwt=token, key=settings.SIMPLE_JWT['SIGNING_KEY'], algorithms=settings.SIMPLE_JWT['ALGORITHM'])
+        user_organizations = Organization.objects.filter(creator=decode_token['user_id'])
+        serializer = ListOrganizationSerializer(instance=user_organizations, many=True)
         return Response({'list': serializer.data})
 
 
-class GetOrganization(generics.ListAPIView):
+
+class GetOrganization(generics.RetrieveUpdateDestroyAPIView):
     queryset = Organization.objects.all()
     serializer_class = ListOrganizationSerializer
     permission_classes = [IsAuthenticated]
+    http_method_names = ['get', 'patch', 'delete']
 
     def get(self, request, *args, **kwargs):
         organization = Organization.objects.get(pk=kwargs['org_pk'])
