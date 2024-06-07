@@ -1,12 +1,12 @@
 export interface IUserOrganizations {
-    URL: string,
+    url: string,
     title: string
 }
 
 export interface IUserProject {
     color: string,
     title: string,
-    URL: string,
+    url: string,
 }
 
 export interface IUserNavBarData {

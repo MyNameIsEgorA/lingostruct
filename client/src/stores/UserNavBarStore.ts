@@ -6,11 +6,12 @@ import {onClientSide} from "@/helpers/decorators/clientSide";
 // import {authAxiosRequest} from "@/helpers/requests/authAxiosRequest";
 import {AxiosInstance, AxiosResponse} from "axios";
 import {IUserNavBar} from "@/types/User";
+import Requests from "@/helpers/requests/authAxiosRequest";
 
 class UserNavBarStore {
 
     private activeOrganization: string = ""
-    private activeProject: IUserProject = {title: "", color: "", URL: ""};
+    private activeProject: IUserProject = {title: "", color: "", url: ""};
 
     constructor() {
         makeAutoObservable(this)
@@ -20,47 +21,28 @@ class UserNavBarStore {
 
     private NavBarInfo: INavBarInfo = {
         organizations: [
-            {
-                URL: "https://www.organization1.com",
-                title: "Organization 1"
-            },
-            {
-                URL: "https://www.organization2.com",
-                title: "Organization 2"
-            }
         ],
-        activitiesAmount: 99,
+        activitiesAmount: 0,
         projects: [
-            {
-                color: "#FF0000",
-                title: "Project 1",
-                URL: "https://www.project1.com"
-            },
-            {
-                color: "#00FF00",
-                title: "Project 2",
-                URL: "https://www.project2.com"
-            }
         ],
         user: {
-            email: "john.doe@example.com",
-            image: 'http://api.lingostruct.ru/media/profile/admin/3yqmiiq8ejjgjki0ws5qn872enbdaj1c.jpg',
-            name: "John Doe"
+            email: "",
+            image: '',
+            name: ""
         }
     };
 
     public status: string = "initial"
 
-    // private getApiData = async (): Promise<void> => {
-    //     const instance: false | AxiosInstance = await authAxiosRequest()
-    //     if (!instance) {
-    //         console.log("ERROR IN `public getApiData: no token`")
-    //         return;
-    //     }
-    //     const data: any = await instance.get("/profile/test")
-    //     // this.setNavBarInfo(data.data.detail[0])
-    //     console.log(data.data.detail[0])
-    // }
+    public getApiData = async (): Promise<void> => {
+        const requestMaker: Requests = new Requests("profile/test");
+        const response: any = await requestMaker.makeRequest()
+        if (response) {
+            this.NavBarInfo = response.data.detail[0]
+            this.NavBarInfo.user.image = 'http://api.lingostruct.ru/media/profile/admin/3yqmiiq8ejjgjki0ws5qn872enbdaj1c.jpg'
+            console.log(response.data.detail[0])
+        }
+    }
 
     public setActiveOrganization = (organizationName: string): void => {
         this.activeOrganization = organizationName;

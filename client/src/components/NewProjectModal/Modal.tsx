@@ -1,14 +1,14 @@
-import React, { useState, useRef } from 'react';
+import React from 'react';
 import Modal from 'react-modal';
 import Image from "next/image";
 import CloseImage from "@/../public/Delete.svg";
-import Calendar from "@/components/NewProjectModal/Calendar";
 import { observer } from "mobx-react";
-import projectInfoModalStore from "@/stores/ProjectInfoModalStore";
 import "./modal.css";
-import DateImage from "@/../public/dateImage.svg";
 import FirstLayer from "@/components/NewProjectModal/FirstLayer";
 import SecondLayer from "@/components/NewProjectModal/SecondLayer";
+import Description from "@/components/NewProjectModal/Description";
+import Price from "@/components/NewProjectModal/Price";
+import ModalButtons from "@/components/NewProjectModal/modalButtons";
 
 interface NewProjectModalProps {
     isOpen: boolean;
@@ -53,6 +53,9 @@ const NewProjectModal: React.FC<NewProjectModalProps> = observer(({ isOpen, onCl
             <div className="mt-2 text-[#79828B]">Add project information here</div>
             <FirstLayer />
             <SecondLayer />
+            <Description />
+            <Price/>
+            <ModalButtons onClose={onClose}/>
         </Modal>
     );
 });

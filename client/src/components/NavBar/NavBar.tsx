@@ -1,6 +1,6 @@
 "use client"
 
-import React, {useState, useLayoutEffect} from 'react';
+import React, {useState, useLayoutEffect, useEffect} from 'react';
 import { observer } from "mobx-react"
 import "./navBarMain.css"
 import Logo from "../../../public/Logo.svg"
@@ -16,6 +16,10 @@ import NavUserInfo from "@/components/NavBar/UserInfo/NavUserInfo";
 const NavBar = observer(() => {
     const [isDesktop, setIsDesktop] = useState<boolean>(true)
     const [showNavBar, setShowNavBar] = useState<boolean>(false)
+
+    useEffect((): void => {
+        userNavBarStore.getApiData()
+    }, []);
 
     useLayoutEffect(() => {
 
