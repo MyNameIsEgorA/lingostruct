@@ -4,6 +4,7 @@ venv
 # Папки кэша
 *.idea
 
+**/__pycache__/
 backend/__pycache__
 backend/__pycache__/*
 backend/system/__pycache__
