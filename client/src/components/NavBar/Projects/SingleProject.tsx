@@ -7,7 +7,7 @@ interface IProps extends IUserProject {
     clickAction: () => void;
 }
 
-const SingleProject: React.FC<IProps> = ({title, URL, color, isActive, clickAction}): ReactNode => {
+const SingleProject: React.FC<IProps> = ({title, url, color, isActive, clickAction}): ReactNode => {
 
     const [show, setShow] = useState<boolean>(false);
 
@@ -15,11 +15,9 @@ const SingleProject: React.FC<IProps> = ({title, URL, color, isActive, clickActi
         setShow(isActive)
     }, [isActive]);
 
-    console.log(color)
-
     return (
         <div onClick={clickAction} className={""}>
-            <Link href={URL}
+            <Link href={url}
                   onClick={() => clickAction()}>
                 <div
                     className={`text-white rounded-lg text-[16px] px-8 py-2 flex space-x-2 items-center ${show ? "bg-white bg-opacity-10" : "text-opacity-50"}`}>

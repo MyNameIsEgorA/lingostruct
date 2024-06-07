@@ -42,7 +42,7 @@ const SecondLayer = () => {
                         <span className="">select date</span>
                     </button>
                     {showStartDate && (
-                        <div className={"absolute"}>
+                        <div className={"absolute z-20"}>
                             <Calendar
                                 getDate={projectInfoModalStore.startDate}
                                 setNewDate={projectInfoModalStore.setStartDate}/>

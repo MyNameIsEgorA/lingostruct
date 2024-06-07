@@ -19,9 +19,9 @@ const ProjectsList = observer((): ReactNode => {
             {projects.map((project, index) => {
                 return <SingleProject key={index}
                                       color={project.color}
-                                      URL={project.URL}
+                                      url={project.url}
                                       title={project.title}
-                                      isActive={project.URL === active?.URL}
+                                      isActive={project.url === active?.url}
                                       clickAction={() => {
                                           userNavBarStore.setActiveProject(project);
                                       }}

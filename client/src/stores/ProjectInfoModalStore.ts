@@ -22,7 +22,6 @@ class ProjectInfoModalStore {
             if (newProjectDataJSON !== null) {
                 this.saveStateToStorage()
             }
-            console.log(this.ProjectData)
         })
     }
 
@@ -44,6 +43,17 @@ class ProjectInfoModalStore {
             }
             this.ProjectData = parsedData
         }
+    }
+
+    @onClientSide
+    public clearSessionStorage(): void {
+        this.resetProjectData()
+        sessionStorage.removeItem("newProjectData")
+    }
+
+    public onCreateProject = (): void  => {
+        console.log(this.ProjectData)
+        this.clearSessionStorage()
     }
 
     public get projectName(): string {
@@ -96,6 +106,16 @@ class ProjectInfoModalStore {
     }
     public setProjectData(data: IProjectModal) {
         this.ProjectData = data;
+    }
+
+    private resetProjectData(): void {
+        this.ProjectData.projectName = "";
+        this.ProjectData.projectCode = "";
+        this.ProjectData.color = "#000000";
+        this.ProjectData.startDate = new Date();
+        this.ProjectData.endDate = new Date();
+        this.ProjectData.projectDescription = "";
+        this.ProjectData.projectCost = "";
     }
 
 }
