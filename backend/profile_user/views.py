@@ -68,7 +68,7 @@ class GetOneProfile(views.APIView):
             'image': 'lingostruct.ru/blabla.jpg',
             'name': 'Test Testovich',
         },
-            'activitoesAmount': 99,
+            'activitiesAmount': 99,
             'organizations': [
                 {
                     'url': 'http://lingostruct.ru/blabla/',
