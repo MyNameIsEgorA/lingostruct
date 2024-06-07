@@ -30,13 +30,13 @@ class CreateOrganizationSerializer(serializers.ModelSerializer):
 class ListProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
-        fields = ['id', 'organization', 'name', 'code', 'color', 'date_start', 'date_end', 'cost', 'date_created', 'member']
+        fields = ['id', 'organization', 'name', 'description', 'code', 'color', 'date_start', 'date_end', 'cost', 'date_created', 'member']
 
 
 class CreateProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
-        fields = ['organization', 'name', 'color', 'date_start', 'date_end', 'cost']
+        fields = ['organization', 'name', 'description', 'code', 'color', 'date_start', 'date_end', 'cost']
 
     def create(self, validated_data):
         project = Project.objects.create(**validated_data)
