@@ -2,7 +2,7 @@ import random
 
 from rest_framework import serializers
 
-from .models import Organization, Project
+from .models import Organization, Project, Member
 from django.contrib.auth.models import User
 
 
@@ -10,7 +10,6 @@ class ListOrganizationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Organization
         fields = ['id', 'creator', 'name', 'country', 'city', 'address', 'date_register', 'members', 'projects']
-        depth = 1
 
 
 class CreateOrganizationSerializer(serializers.ModelSerializer):
@@ -25,6 +24,13 @@ class CreateOrganizationSerializer(serializers.ModelSerializer):
         organization.creator = self.context['request'].user
         organization.save()
         return organization
+
+
+class MyOrganizationSerializer(serializers.ModelSerializer):
+    membersAmount = serializers.IntegerField(source='members.count', read_only=True)
+    class Meta:
+        model = Organization
+        fields = ['id', 'name', 'membersAmount']
 
 
 class ListProjectSerializer(serializers.ModelSerializer):
@@ -43,6 +49,12 @@ class CreateProjectSerializer(serializers.ModelSerializer):
         project.code = "Code" + str(random.randrange(10000000, 99999999))
         project.save()
         return project
+
+
+class MemberSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Member
+        fields = ['id', 'organization', 'project', 'status']
 
 
 class NavOrganizationSerializer(serializers.HyperlinkedModelSerializer):

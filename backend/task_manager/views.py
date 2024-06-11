@@ -7,7 +7,7 @@ from django.conf import settings
 
 from .serializers import (ListOrganizationSerializer, CreateOrganizationSerializer,
                           ListProjectSerializer, CreateProjectSerializer, NavOrganizationSerializer,
-                          NavProjectSerializer)
+                          NavProjectSerializer, MemberSerializer, MyOrganizationSerializer)
 
 from .models import Organization, Project, Member
 from profile_user.models import Profile
@@ -40,8 +40,8 @@ class MyOrganizations(generics.ListAPIView):
     def get(self, request, *args, **kwargs):
         user_id = decode_token(request)['user_id']
         user_organizations = Organization.objects.filter(creator=user_id)
-        serializer = ListOrganizationSerializer(instance=user_organizations, many=True)
-        return Response({'list': serializer.data})
+        serializer = MyOrganizationSerializer(user_organizations, many=True)
+        return Response({'organizations': serializer.data,})
 
 
 class GetOrganization(generics.RetrieveUpdateDestroyAPIView):
@@ -108,3 +108,9 @@ class Navbar(views.APIView):
             'organizations': organizations_serializer.data,
             'projects': projects_serializer.data
         })
+
+
+class MembersList(generics.ListAPIView):
+    queryset = Member.objects.all()
+    serializer_class = MemberSerializer
+    permission_classes = [IsAdminUser]

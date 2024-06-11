@@ -26,6 +26,22 @@ class ProfileSerializer(serializers.ModelSerializer):
         depth = 1
 
 
+class UpdateProfileSerializer(serializers.ModelSerializer):
+    photo = serializers.ImageField(use_url=True, required=False)
+    class Meta:
+        model = Profile
+        fields = ['first_name', 'last_name', 'age', 'photo']
+
+    def update(self, instance, validated_data):
+        profile = Profile.objects.get(pk=instance.pk)
+        profile.first_name = validated_data.get('first_name', profile.first_name)
+        profile.last_name = validated_data.get('last_name', profile.last_name)
+        profile.age = validated_data.get('age', profile.age)
+        profile.photo = validated_data.get('photo', profile.photo)
+        profile.save()
+        return profile
+
+
 class UserRegistrationSerializer(serializers.ModelSerializer):
     username = serializers.CharField(validators=[UniqueValidator(queryset=User.objects.all())], required=True)
     email = serializers.EmailField(validators=[UniqueValidator(queryset=User.objects.all())], required=True)
