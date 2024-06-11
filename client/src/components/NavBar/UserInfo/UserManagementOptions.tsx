@@ -10,7 +10,12 @@ const UserManagementOptions = () => {
             <div className={"border-y-2 py-[12px] my-3 border-gray-800 " + classes}>
                 <Link href={"create_organization"}>Create New Organizations</Link>
                 </div>
-            <div className={classes}>Log out</div>
+            <div className={classes}
+                 onClick={() => {
+                     sessionStorage.clear()
+                     window.location.href="/login/"
+                 }}
+            >Log out</div>
         </div>
     )
 }

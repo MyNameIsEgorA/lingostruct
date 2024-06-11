@@ -1,4 +1,3 @@
-import {observer} from "mobx-react";
 import userNavBarStore from "@/stores/UserNavBarStore";
 import Image from "next/image";
 import {IUserShortData} from "@/types/Organizations";
@@ -6,7 +5,7 @@ import Options from "@/../public/ellipsis-horizontal-outline.svg"
 import {useState} from "react";
 import UserManagementOptions from "@/components/NavBar/UserInfo/UserManagementOptions";
 
-const NavUserInfo = observer(() => {
+const NavUserInfo = () => {
 
     const userData: IUserShortData = userNavBarStore.userInfo
     const [isActive, setIsActive] = useState<boolean>(false)
@@ -27,6 +26,6 @@ const NavUserInfo = observer(() => {
             </div>
         </div>
     )
-})
+}
 
 export default NavUserInfo
