@@ -3,7 +3,7 @@ import Modal from 'react-modal';
 import Image from "next/image";
 import CloseImage from "@/../public/Delete.svg";
 import { observer } from "mobx-react";
-import "./modal.css";
+import "../../styles/inputStyles.css";
 import FirstLayer from "@/components/NewProjectModal/FirstLayer";
 import SecondLayer from "@/components/NewProjectModal/SecondLayer";
 import Description from "@/components/NewProjectModal/Description";
@@ -15,7 +15,7 @@ interface NewProjectModalProps {
     onClose: () => void;
 }
 
-Modal.setAppElement("#app");
+Modal.setAppElement("#__next")
 
 const NewProjectModal: React.FC<NewProjectModalProps> = observer(({ isOpen, onClose }) => {
 
@@ -43,6 +43,7 @@ const NewProjectModal: React.FC<NewProjectModalProps> = observer(({ isOpen, onCl
             onRequestClose={onClose}
             style={customStyles}
             contentLabel="Новый проект"
+            ariaHideApp={false}
         >
             <div className={"flex justify-between"}>
                 <h2 className={"text-[18px]"}>Create new project</h2>

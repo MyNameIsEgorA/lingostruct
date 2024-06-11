@@ -1,8 +1,8 @@
-import axios, {AxiosInstance, AxiosResponse} from "axios";
+import axios, {Axios, AxiosError, AxiosInstance, AxiosResponse} from "axios";
 import {onClientSide} from "@/helpers/decorators/clientSide";
 
 
-enum RequestTypes {
+export enum RequestTypes {
     GET = 1,
     POST,
     PATCH,
@@ -80,16 +80,28 @@ class Requests {
 
     public async makeRequest(): Promise<any> {
         try {
-            const response: AxiosResponse = await this.instance.get(this.URL);
-            this.depth = 0;
-            return response;
-        } catch (e: any) {
+            let response: AxiosResponse;
+            switch (this.type) {
+                case RequestTypes.GET:
+                    response = await this.instance.get(this.URL);
+                    this.depth = 0;
+                    return response
+                case RequestTypes.POST:
+                    response = await this.instance.post(this.URL, this.body);
+                    console.log(response.status)
+                    this.depth = 0;
+
+        }}
+        catch (e: any) {
+            if (e.response.status !== 401) {
+                return e.response.status
+            }
             if (e.response && e.response.status === 401 && this.depth < 2) {
                 await this.refreshUserToken();
                 this.depth++;
                 return this.makeRequest();
             } else {
-                window.location.href = "/login";
+                    window.location.href = "/login"
             }
         }
     }

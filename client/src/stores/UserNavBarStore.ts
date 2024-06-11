@@ -1,7 +1,7 @@
 import {makeAutoObservable} from "mobx";
 
 
-import type {INavBarInfo, IUserNavBarData, IUserOrganizations, IUserProject} from "@/types/Organizations";
+import type {INavBarInfo, IUserShortData, IUserOrganizations, IUserProject} from "@/types/Organizations";
 import {onClientSide} from "@/helpers/decorators/clientSide";
 // import {authAxiosRequest} from "@/helpers/requests/authAxiosRequest";
 import {AxiosInstance, AxiosResponse} from "axios";
@@ -89,7 +89,7 @@ class UserNavBarStore {
     public get projectsList(): IUserProject[] {
         return this.NavBarInfo.projects
     }
-    public get userInfo(): IUserNavBarData {
+    public get userInfo(): IUserShortData {
         return this.NavBarInfo.user
     }
     public setNavBarInfo(data: INavBarInfo): void {

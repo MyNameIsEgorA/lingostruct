@@ -16,7 +16,7 @@ const SecondLayer = () => {
     return (
             <div className="flex justify-between mt-5">
                 <div className="relative">
-                    <button className="modal-section items-center space-x-3"
+                    <button className="input-section items-center space-x-3"
                             onClick={() => {
                                 setShowColors(!showColors)
                                 setShowEndDate(false)
@@ -32,7 +32,7 @@ const SecondLayer = () => {
 
 
                 <div className="relative">
-                    <button className={"w-[169px] modal-section flex items-center space-x-3"}
+                    <button className={"w-[169px] input-section flex items-center space-x-3"}
                             onClick={() => {
                                 setShowStartDate(!showStartDate)
                                 setShowEndDate(false)
@@ -52,7 +52,7 @@ const SecondLayer = () => {
 
 
                 <div className="relative">
-                    <button className={"w-[169px] modal-section flex items-center space-x-3"}
+                    <button className={"w-[169px] input-section flex items-center space-x-3"}
                             onClick={() => {
                                 setShowEndDate(!showEndDate)
                                 setShowStartDate(false)

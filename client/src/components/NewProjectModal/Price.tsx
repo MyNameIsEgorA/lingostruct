@@ -20,7 +20,7 @@ const Price = (): ReactNode => {
         <div className={"mt-5"}>
             <h5>Project TGA Cost Estimation</h5>
             <input type="text"
-                   className={"modal-section w-full mt-2"}
+                   className={"input-section w-full mt-2"}
                    onChange={onChangePrice}
                    value={price}
                    placeholder={"€ Enter value"}
