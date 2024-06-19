@@ -44,5 +44,10 @@ export interface IUserPassword {
     password2: string,
 }
 
+export interface IUserProfile {
+    name: string,
+    email: string,
+    image: string,
+}
 
 export interface IUserRegisterInfo extends IUserRegisterContactInfo, IUserLanguage, IUserPassword {};

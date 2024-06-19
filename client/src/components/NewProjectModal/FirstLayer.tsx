@@ -22,7 +22,7 @@ const FirstLayer = observer(() => {
             <div className="">
                 <h5>Project name</h5>
                 <input type="text"
-                       className="modal-section w-[278px]"
+                       className="input-section w-[278px]"
                        placeholder={"e.g. Building 52"}
                        value={projectName}
                        onChange={onProjectNameChange}
@@ -31,7 +31,7 @@ const FirstLayer = observer(() => {
             <div className="">
                 <h5>Project code</h5>
                 <input type="text"
-                       className="modal-section w-[156px]"
+                       className="input-section w-[156px]"
                        placeholder={"e.g. 5252538"}
                        value={projectCode}
                        onChange={onProjectCodeChange}

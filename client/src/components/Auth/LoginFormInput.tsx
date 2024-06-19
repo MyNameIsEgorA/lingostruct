@@ -29,7 +29,7 @@ const LoginFormInput = () => {
         try {
             const response: string | undefined = await userAuthStore.loginUser(loginData);
             if (typeof response === "string") {
-                window.location.href = '/';
+                window.location.href = '/my_organizations';
             }
         } catch (error) {
             console.error(error);

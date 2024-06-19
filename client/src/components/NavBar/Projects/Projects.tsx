@@ -7,6 +7,7 @@ import Arrow from "../../../../public/arrow.svg";
 import ProjectsList from "@/components/NavBar/Projects/ProjectsList";
 import AddProject from "@/components/NavBar/Projects/AddProject";
 import NavUserInfo from "@/components/NavBar/UserInfo/NavUserInfo";
+import ProjectImage from "@/components/ overall/ProjectImage";
 
 const Projects = (): ReactNode => {
 
@@ -15,10 +16,7 @@ const Projects = (): ReactNode => {
     return (
         <div>
             <div className={"flex mt-4 justify-between"}>
-                <div className="flex space-x-4">
-                    <Image src={Icon} alt={"Projects"}/>
-                    <h4>Projects</h4>
-                </div>
+                <ProjectImage title={"Projects"}/>
                 <button onClick={() => {
                     setShowList(!showList)
                 }} className={"pr-3"}>

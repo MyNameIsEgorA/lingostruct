@@ -19,7 +19,7 @@ const Description = (): ReactNode => {
                 value={value}
                 onChange={changeValue}
                 placeholder={"Please describe your project here...."}
-                className={"modal-section min-h-[128px] w-full mt-2"}
+                className={"input-section min-h-[128px] w-full mt-2"}
             />
 
         </div>

@@ -9,7 +9,7 @@ export interface IUserProject {
     url: string,
 }
 
-export interface IUserNavBarData {
+export interface IUserShortData {
     image: string,
     name: string,
     email: string,
@@ -19,5 +19,22 @@ export interface INavBarInfo {
     organizations: IUserOrganizations[],
     activitiesAmount: number,
     projects: IUserProject[],
-    user: IUserNavBarData
+    user: IUserShortData
+}
+
+export interface IFullOrganizationInfo {
+    name: string,
+    country: string,
+    city: string,
+    address: string
+}
+
+export interface IOrganizationApi {
+    id: number,
+    name: string,
+    membersAmount: number
+}
+
+export interface IOrganizationsAPI {
+    organizations: IOrganizationApi[]
 }
