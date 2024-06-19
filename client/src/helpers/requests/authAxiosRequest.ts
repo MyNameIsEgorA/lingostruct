@@ -46,7 +46,7 @@ class Requests {
     private getUserToken(): void | false {
         const token: string | null = sessionStorage.getItem("UserToken")
         if (token === null) {
-            window.location.href = '/login'
+            // window.location.href = '/login'
             return;
         }
         const tokenData = JSON.parse(token)
@@ -74,7 +74,7 @@ class Requests {
             this.instance.defaults.headers.common["Authorization"] = `JWT ${this.accessToken}`;
             this.refreshSessionStorage();
         } catch (e) {
-            window.location.href = "/login";
+            // window.location.href = "/login";
         }
     }
 
@@ -90,7 +90,6 @@ class Requests {
                     response = await this.instance.post(this.URL, this.body);
                     console.log(response.status)
                     this.depth = 0;
-
         }}
         catch (e: any) {
             if (e.response.status !== 401) {
@@ -101,7 +100,7 @@ class Requests {
                 this.depth++;
                 return this.makeRequest();
             } else {
-                    window.location.href = "/login"
+                    // window.location.href = "/login"
             }
         }
     }
