@@ -1,6 +1,8 @@
 from rest_framework.views import Response
 from rest_framework import generics, views
-from rest_framework.permissions import IsAdminUser, IsAuthenticated
+from rest_framework.permissions import IsAdminUser, IsAuthenticated, AllowAny
+from rest_framework import status
+from django.core.mail import send_mail
 
 import jwt
 from django.conf import settings
@@ -30,6 +32,9 @@ class CreateOrganization(generics.CreateAPIView):
     queryset = Organization.objects.all()
     serializer_class = CreateOrganizationSerializer
     permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
 
 
 class MyOrganizations(generics.ListAPIView):
@@ -114,3 +119,19 @@ class MembersList(generics.ListAPIView):
     queryset = Member.objects.all()
     serializer_class = MemberSerializer
     permission_classes = [IsAdminUser]
+
+
+class AddMember(views.APIView):
+    def post(self, request, *args, **kwargs):
+        profile = Profile.objects.get(user__email=kwargs['email'])
+        organization = request.headers.get('organization')
+        print(profile)
+        if organization:
+            subject = profile.user.username
+            message = f"{subject}, вас пригласили в организацию ХХХ. Для подтверждения перейдите по ссылке."
+            send_mail(subject, message, settings.EMAIL_HOST_USER, [profile.user.email], fail_silently=False)
+            return Response({'detail': 'Сообщение отправлено'}, status=status.HTTP_200_OK)
+        else:
+            return Response({'detail': 'Организация не найдена'}, status=status.HTTP_404_NOT_FOUND)
+
+

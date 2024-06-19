@@ -12,6 +12,7 @@ urlpatterns = [
     path('projects/create/', CreateProject.as_view()),
     path('project/<int:pk>/', GetProject.as_view(), name='project-detail'),
     path('list_all_members', MembersList.as_view()),
+    path('member/<str:email>/add/', AddMember.as_view()),
 
     path('navbar/', Navbar.as_view()),
 ]
