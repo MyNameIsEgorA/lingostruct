@@ -7,3 +7,9 @@ export interface IProjectModal {
     projectDescription: string,
     projectCost: string,
 }
+
+export interface IProjectInOrganization {
+    id: number,
+    name: string,
+    membersAmount: number,
+}

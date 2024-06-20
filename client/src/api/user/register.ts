@@ -3,7 +3,7 @@ import {type IUserRegisterInfo} from "@/types/User";
 
 const registerUserAPI = async (loginData: IUserRegisterInfo): Promise<boolean> => {
     try {
-        const response = await axios.post('http://api.lingostruct.ru/api/profile/register/', {
+        const response = await axios.post('http://45.89.189.236/api/profile/register/', {
             username: loginData.name,
             password: loginData.password1,
             password2: loginData.password2,

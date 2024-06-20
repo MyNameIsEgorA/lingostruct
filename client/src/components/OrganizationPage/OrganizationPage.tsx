@@ -1,13 +1,33 @@
-import SettingInfo from "@/components/OrganizationPage/SettingInfo";
-import FormSection from "@/components/OrganizationPage/FormSection/FormSection";
+// src/App.tsx
+import React, { useState, useRef, useEffect } from 'react';
+import Navigation, {UserPagesEnum} from "@/components/OrganizationPage/Navigation";
+import DecorativeSection from "@/components/OrganizationPage/DecorativeSection";
+import UserManagement from "@/components/OrganizationPage/UserManagement/UserManagement";
+import {observer} from "mobx-react";
+import OrganizationStore from "@/stores/OrganizationStore";
 
-const OrganizationPage = () => (
-    <div className={"flex flex-col p-8"}>
-        <h2 className={"text-[24px] font-semibold text-[#101828]"}>Workspace creating</h2>
-        <h5 className={"mt-1 text-[14px] text-[#667085] mb-5"}>manage your team members and their account permissions here.</h5>
-        <SettingInfo edit={false}/>
-        <FormSection/>
-    </div>
-);
+interface Tab {
+    id: number;
+    label: string;
+}
 
-export default OrganizationPage;
+const OrganizationsPage: React.FC<{id: number}> = observer(({id}) => {
+    const [activeTab, setActiveTab] = useState<number>(0);
+    const organizationStore: OrganizationStore = new OrganizationStore(1)
+
+    useEffect(() => {
+        console.log(activeTab)
+    }, [activeTab]);
+
+    return (
+        <div className={"p-8 w-full"}>
+            <h2 className={"font-semibold text-[24px] text-[#101828]"}>Workspace settings</h2>
+            <h4 className={"text-[#667085] text-[14px]"}>Manage your team members and their account permissions here.</h4>
+            <Navigation activeTab={activeTab} setActiveTab={setActiveTab}/>
+            <DecorativeSection id={activeTab} className={"mb-9"}/>
+            {activeTab === UserPagesEnum.UserManagement && <UserManagement organizationsStore={organizationStore}/>}
+        </div>
+    )
+});
+
+export default OrganizationsPage;

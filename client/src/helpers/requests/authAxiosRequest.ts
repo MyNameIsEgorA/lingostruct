@@ -2,6 +2,9 @@ import axios, {Axios, AxiosError, AxiosInstance, AxiosResponse} from "axios";
 import {onClientSide} from "@/helpers/decorators/clientSide";
 
 
+const baseURL: string = "http://45.89.189.236/api/"
+
+
 export enum RequestTypes {
     GET = 1,
     POST,
@@ -23,7 +26,7 @@ class Requests {
     private depth: number = 0
 
     private instance: AxiosInstance = axios.create({
-        baseURL: "http://api.lingostruct.ru/api",
+        baseURL: baseURL,
         timeout: 3000,
         headers: {},
     })
@@ -46,7 +49,7 @@ class Requests {
     private getUserToken(): void | false {
         const token: string | null = sessionStorage.getItem("UserToken")
         if (token === null) {
-            // window.location.href = '/login'
+            window.location.href = '/login'
             return;
         }
         const tokenData = JSON.parse(token)
@@ -67,14 +70,14 @@ class Requests {
     @onClientSide
     private async refreshUserToken(): Promise<void> {
         try {
-            const newToken: AxiosResponse<any, any> = await axios.post("http://api.lingostruct.ru/api/token/refresh/", {
+            const newToken: AxiosResponse<any, any> = await axios.post(baseURL + "token/refresh/", {
                 refresh: this.refreshToken
             }, { headers: { "Content-Type": "application/json" } })
             this.accessToken = newToken.data.access;
             this.instance.defaults.headers.common["Authorization"] = `JWT ${this.accessToken}`;
             this.refreshSessionStorage();
         } catch (e) {
-            // window.location.href = "/login";
+            window.location.href = "/login";
         }
     }
 
@@ -100,7 +103,7 @@ class Requests {
                 this.depth++;
                 return this.makeRequest();
             } else {
-                    // window.location.href = "/login"
+                    window.location.href = "/login"
             }
         }
     }
