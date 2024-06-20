@@ -122,16 +122,41 @@ class MembersList(generics.ListAPIView):
 
 
 class AddMember(views.APIView):
+    # add:
+    # добавить роль, поменять статус (актив, не активный), время присоединения.
+    # Добавить обязательное поле пк организации
+    #
+    # Добавить ответ на не найденый профиль статус ошибки 404
+
     def post(self, request, *args, **kwargs):
-        profile = Profile.objects.get(user__email=kwargs['email'])
-        organization = request.headers.get('organization')
-        print(profile)
+        try:
+            profile = Profile.objects.get(user__email=kwargs['email'])
+        except Profile.DoesNotExist:
+            return Response({'detail': 'Пользователь не найден'}, status=status.HTTP_404_NOT_FOUND)
+        try:
+            organization = Organization.objects.get(name=kwargs['organization_name'])
+        except Organization.DoesNotExist:
+            return Response({'detail': 'Организация не найдена'}, status=status.HTTP_404_NOT_FOUND)
         if organization:
             subject = profile.user.username
-            message = f"{subject}, вас пригласили в организацию ХХХ. Для подтверждения перейдите по ссылке."
+            message = (f"{subject}, вас пригласили в организацию {organization.name}. Для подтверждения перейдите по ссылке "
+                       f"http://127.0.0.1:8000" + '/api/task_manager/' + str(organization.city) + '.' + str(organization.name) + '363')
+            print(message)
             send_mail(subject, message, settings.EMAIL_HOST_USER, [profile.user.email], fail_silently=False)
             return Response({'detail': 'Сообщение отправлено'}, status=status.HTTP_200_OK)
         else:
             return Response({'detail': 'Организация не найдена'}, status=status.HTTP_404_NOT_FOUND)
 
+
+class ConfirmAddMember(views.APIView):
+    def get(self, request, subject, organization_name, *args, **kwargs):
+        profile = Profile.objects.get(user__username=subject)
+        organization = Organization.objects.get(name=organization_name)
+        if Member.objects.get(profile=profile):
+            return Response({'detail': 'Пользователь уже существует'}, status=status.HTTP_409_CONFLICT)
+        else:
+            member = Member.objects.create(profile=profile, organization=organization, role=Member.ROLE_CHOICE[0][1],
+                                           status=Member.STATUS_CHOICE[0][1])
+            member.save()
+        return Response({'detail': 'Пользователь добавлен в организацию'}, status=status.HTTP_200_OK)
 

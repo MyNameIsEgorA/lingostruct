@@ -56,14 +56,20 @@ class Project(models.Model):
 
 
 class Member(models.Model):
-    STATUS_CHOICE = (
+    ROLE_CHOICE = (
+        ('member', 'Участник'),
         ('admin', 'Администратор'),
-        ('member', 'Участник')
     )
+    STATUS_CHOICE = (
+        ('active', 'Активен'),
+        ('incative', 'Не активен')
+    )
+    role = models.CharField(max_length=10, choices=ROLE_CHOICE, verbose_name='Роль')
     status = models.CharField(max_length=10, choices=STATUS_CHOICE, verbose_name='Статус')
     profile = models.OneToOneField(Profile, on_delete=models.CASCADE, related_name='members', verbose_name='Пользователь')
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE, related_name='members', verbose_name='Организация')
     project = models.ManyToManyField(Project, blank=True, related_name='members', verbose_name='Проект')
+    date_create = models.DateTimeField(auto_now_add=True, verbose_name='Дата присоединения')
 
     objects = models.Manager()
 
