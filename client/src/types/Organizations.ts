@@ -1,3 +1,5 @@
+import {IProjectInOrganization} from "@/types/Project";
+
 export interface IUserOrganizations {
     url: string,
     title: string
@@ -22,6 +24,14 @@ export interface INavBarInfo {
     user: IUserShortData
 }
 
+export interface IUserInOrganization {
+    id: number,
+    role: string,
+    name: string,
+    status: string,
+    image?: string,
+}
+
 export interface IFullOrganizationInfo {
     name: string,
     country: string,
@@ -37,4 +47,22 @@ export interface IOrganizationApi {
 
 export interface IOrganizationsAPI {
     organizations: IOrganizationApi[]
+}
+
+export interface IOrganizationPage {
+    id: number,
+    creator: number,
+    name: string,
+    country: string,
+    city: string,
+    address: string,
+    data_register: string,
+    requestUser: IUserInOrganization,
+    members: IUserInOrganization[],
+    projects: IProjectInOrganization[],
+}
+
+export interface IOrganizationPageUsers {
+    administrators: IUserInOrganization[],
+    workspaceMembers: IUserInOrganization[]
 }

@@ -7,10 +7,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest"
+    "test": "jest",
+    "export": "next build && next export"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.4.2",
+    "@stackbit/types": "^2.0.2",
     "@types/react-datepicker": "^6.2.0",
     "@types/react-modal": "^3.16.3",
     "axios": "^1.7.2",

@@ -39,7 +39,7 @@ class UserNavBarStore {
         const response: any = await requestMaker.makeRequest()
         if (response) {
             this.NavBarInfo = response.data.detail[0]
-            this.NavBarInfo.user.image = 'http://api.lingostruct.ru/media/profile/admin/3yqmiiq8ejjgjki0ws5qn872enbdaj1c.jpg'
+            this.NavBarInfo.user.image = 'http://45.89.189.236/media/profile/admin/3yqmiiq8ejjgjki0ws5qn872enbdaj1c.jpg'
             console.log(response.data.detail[0])
         }
     }
