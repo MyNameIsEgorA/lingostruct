@@ -7,7 +7,7 @@ from profile_user.models import *
 
 
 class Organization(models.Model):
-    creator = models.ForeignKey(settings.AUTH_USER_MODEL, default=settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, related_name='organization', verbose_name='Создатель')
+    creator = models.ForeignKey(User, default=User, on_delete=models.SET_NULL, null=True, related_name='organization', verbose_name='Создатель')
     name = models.CharField(max_length=255, unique=True, verbose_name='Название')
     country = models.CharField(max_length=255, verbose_name='Страна')
     city = models.CharField(max_length=255, verbose_name='Город')
