@@ -62,11 +62,12 @@ class Member(models.Model):
     )
     STATUS_CHOICE = (
         ('active', 'Активен'),
-        ('incative', 'Не активен')
+        ('inactive', 'Приглашен'),
+        ('rejected','Отказался'),
     )
     role = models.CharField(max_length=10, choices=ROLE_CHOICE, verbose_name='Роль')
     status = models.CharField(max_length=10, choices=STATUS_CHOICE, verbose_name='Статус')
-    profile = models.OneToOneField(Profile, on_delete=models.CASCADE, related_name='members', verbose_name='Пользователь')
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='members', verbose_name='Пользователь')
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE, related_name='members', verbose_name='Организация')
     project = models.ManyToManyField(Project, blank=True, related_name='members', verbose_name='Проект')
     date_create = models.DateTimeField(auto_now_add=True, verbose_name='Дата присоединения')
@@ -74,4 +75,4 @@ class Member(models.Model):
     objects = models.Manager()
 
     def __str__(self):
-        return self.profile.user.username
+        return f'{self.profile.user.username}, {self.organization}'

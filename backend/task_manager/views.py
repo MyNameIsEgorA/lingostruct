@@ -9,7 +9,8 @@ from django.conf import settings
 
 from .serializers import (ListOrganizationSerializer, CreateOrganizationSerializer,
                           ListProjectSerializer, CreateProjectSerializer, NavOrganizationSerializer,
-                          NavProjectSerializer, MemberSerializer, MyOrganizationSerializer)
+                          NavProjectSerializer, MemberSerializer, MyOrganizationSerializer,
+                          MemberOrganizationSerializer, OrganizationDetailSerializer)
 
 from .models import Organization, Project, Member
 from profile_user.models import Profile
@@ -18,7 +19,7 @@ from profile_user.models import Profile
 def decode_token(request):
     token = str(request.headers.get('Authorization')).split(' ')[1]
     decoded_token = jwt.decode(jwt=token, key=settings.SIMPLE_JWT['SIGNING_KEY'],
-                              algorithms=settings.SIMPLE_JWT['ALGORITHM'])
+                               algorithms=settings.SIMPLE_JWT['ALGORITHM'])
     return decoded_token
 
 
@@ -44,9 +45,29 @@ class MyOrganizations(generics.ListAPIView):
 
     def get(self, request, *args, **kwargs):
         user_id = decode_token(request)['user_id']
-        user_organizations = Organization.objects.filter(creator=user_id)
-        serializer = MyOrganizationSerializer(user_organizations, many=True)
-        return Response({'organizations': serializer.data,})
+        # user_organizations = Organization.objects.filter(creator=user_id)
+        # serializer_organization = MyOrganizationSerializer(user_organizations, many=True)
+        # member = Member.objects.filter(status='inactive')
+        # serializer_member = MemberSerializer(member, many=True)
+        user_profile = Profile.objects.get(user__pk=user_id)
+        print(user_profile)
+        organization_is_active = user_profile.members.filter(status='active')
+        print(organization_is_active)
+        serializer_active = MemberOrganizationSerializer(organization_is_active, many=True)
+        organization_is_inactive = user_profile.members.filter(status='inactive')
+        print(organization_is_inactive)
+        serializer_inactive = MemberOrganizationSerializer(organization_is_inactive, many=True)
+
+        return Response({
+            'active_organizations': serializer_active.data,
+            'invited': serializer_inactive.data,
+        }, status=status.HTTP_200_OK)
+
+        # return Response({
+        #     'organizations': serializer_organization.data,
+        #     'invited': serializer_member.data,
+        # }
+        # )
 
 
 class GetOrganization(generics.RetrieveUpdateDestroyAPIView):
@@ -55,10 +76,31 @@ class GetOrganization(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
     http_method_names = ['get', 'patch', 'delete']
 
-    # def get(self, request, *args, **kwargs):
-    #     organization = Organization.objects.get(pk=kwargs['pk'])
-    #     serializer = ListOrganizationSerializer(instance=organization, many=False)
-    #     return Response({'organization': serializer.data})
+    def get(self, request, *args, **kwargs):
+        request_user = Profile.objects.get(user=decode_token(request)['user_id'])
+        organization = Organization.objects.get(pk=kwargs['pk'])
+        serializer = OrganizationDetailSerializer(instance=organization, many=False)
+        try:
+            request_user_detail = request_user.members.get(organization=kwargs['pk'])
+        except Member.DoesNotExist:
+            return Response({
+                'request_user': {
+                    'id': None,
+                    'name': None,
+                    'role': None,
+                    'status': None,
+                },
+                'organization': serializer.data
+            }, status=status.HTTP_200_OK)
+        return Response({
+            'request_user': {
+                'id': request_user.pk,
+                'name': request_user.user.username,
+                'role': request_user_detail.role,
+                'status': request_user_detail.status,
+            },
+            'organization': serializer.data
+        }, status=status.HTTP_200_OK)
 
 
 class ListAllProjects(generics.ListAPIView):
@@ -122,12 +164,6 @@ class MembersList(generics.ListAPIView):
 
 
 class AddMember(views.APIView):
-    # add:
-    # добавить роль, поменять статус (актив, не активный), время присоединения.
-    # Добавить обязательное поле пк организации
-    #
-    # Добавить ответ на не найденый профиль статус ошибки 404
-
     def post(self, request, *args, **kwargs):
         try:
             profile = Profile.objects.get(user__email=kwargs['email'])
@@ -139,10 +175,14 @@ class AddMember(views.APIView):
             return Response({'detail': 'Организация не найдена'}, status=status.HTTP_404_NOT_FOUND)
         if organization:
             subject = profile.user.username
-            message = (f"{subject}, вас пригласили в организацию {organization.name}. Для подтверждения перейдите по ссылке "
-                       f"http://127.0.0.1:8000" + '/api/task_manager/' + str(organization.city) + '.' + str(organization.name) + '363')
-            print(message)
+            message = (
+                        f"{subject}, вас пригласили в организацию {organization.name}. Для подтверждения перейдите по ссылке "
+                        f"http://{settings.ALLOWED_HOSTS[0]}" + '/api/task_manager/' + str(
+                    organization.city) + '.' + str(organization.name) + '363')
             send_mail(subject, message, settings.EMAIL_HOST_USER, [profile.user.email], fail_silently=False)
+            member = Member.objects.create(profile=profile, organization=organization, role=Member.ROLE_CHOICE[0][0],
+                                           status=Member.STATUS_CHOICE[1][0])
+            member.save()
             return Response({'detail': 'Сообщение отправлено'}, status=status.HTTP_200_OK)
         else:
             return Response({'detail': 'Организация не найдена'}, status=status.HTTP_404_NOT_FOUND)
@@ -155,8 +195,7 @@ class ConfirmAddMember(views.APIView):
         if Member.objects.get(profile=profile):
             return Response({'detail': 'Пользователь уже существует'}, status=status.HTTP_409_CONFLICT)
         else:
-            member = Member.objects.create(profile=profile, organization=organization, role=Member.ROLE_CHOICE[0][1],
-                                           status=Member.STATUS_CHOICE[0][1])
+            member = Member.objects.create(profile=profile, organization=organization, role=Member.ROLE_CHOICE[0][0],
+                                           status=Member.STATUS_CHOICE[0][0])
             member.save()
         return Response({'detail': 'Пользователь добавлен в организацию'}, status=status.HTTP_200_OK)
-

@@ -15,5 +15,5 @@ class ProjectAdmin(admin.ModelAdmin):
 
 @admin.register(Member)
 class MemberAdmin(admin.ModelAdmin):
-    list_display = ['profile', 'organization', 'date_create']
+    list_display = ['profile', 'organization', 'role', 'status', 'date_create']
 

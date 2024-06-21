@@ -30,7 +30,7 @@ class MyOrganizationSerializer(serializers.ModelSerializer):
     membersAmount = serializers.IntegerField(source='members.count', read_only=True)
     class Meta:
         model = Organization
-        fields = ['id', 'name', 'membersAmount']
+        fields = ['id', 'name', 'creator', 'membersAmount']
 
 
 class ListProjectSerializer(serializers.ModelSerializer):
@@ -54,7 +54,7 @@ class CreateProjectSerializer(serializers.ModelSerializer):
 class MemberSerializer(serializers.ModelSerializer):
     class Meta:
         model = Member
-        fields = ['id', 'organization', 'project', 'status']
+        fields = ['id', 'organization', 'project', 'status', 'role']
 
 
 class NavOrganizationSerializer(serializers.HyperlinkedModelSerializer):
@@ -67,3 +67,17 @@ class NavProjectSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Project
         fields = ['url', 'name', 'color']
+
+
+class MemberOrganizationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Member
+        fields = ['id', 'organization']
+        depth = 1
+
+
+class OrganizationDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Organization
+        fields = ['id', 'creator', 'name', 'country', 'city', 'address', 'date_register', 'members', 'projects']
+        depth = 1
