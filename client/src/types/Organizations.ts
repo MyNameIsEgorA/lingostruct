@@ -30,6 +30,8 @@ export interface IUserInOrganization {
     name: string,
     status: string,
     image?: string,
+    memberSince: string,
+    email: string,
 }
 
 export interface IFullOrganizationInfo {

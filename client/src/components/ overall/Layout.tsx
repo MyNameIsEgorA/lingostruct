@@ -6,8 +6,8 @@ interface LayoutProps {
 
 export const Layout: React.FC<LayoutProps> = ({showNavBar }) => {
     return (
-        <>
+        <div className="mr-[280px]">
             {showNavBar && <NavBar />}
-        </>
+        </div>
     );
 };

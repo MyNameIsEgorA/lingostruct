@@ -4,7 +4,7 @@ import Navigation, {UserPagesEnum} from "@/components/OrganizationPage/Navigatio
 import DecorativeSection from "@/components/OrganizationPage/DecorativeSection";
 import UserManagement from "@/components/OrganizationPage/UserManagement/UserManagement";
 import {observer} from "mobx-react";
-import OrganizationStore from "@/stores/OrganizationStore";
+import {OrganizationStore} from "@/stores/OrganizationStore";
 
 interface Tab {
     id: number;
@@ -13,7 +13,7 @@ interface Tab {
 
 const OrganizationsPage: React.FC<{id: number}> = observer(({id}) => {
     const [activeTab, setActiveTab] = useState<number>(0);
-    const organizationStore: OrganizationStore = new OrganizationStore(1)
+    const organizationStore: OrganizationStore = OrganizationStore.getInstance(id)
 
     useEffect(() => {
         console.log(activeTab)

@@ -12,26 +12,34 @@ export const getOrganizationData = (id: number): IOrganizationPage => {
                 name: "Egor",
                 status: "active",
                 id: 1,
-                role: "admin"
+                role: "admin",
+                email: "email@email.com",
+                memberSince: "10 Jan 2022"
             },
             members: [
                 {
-                    name: "Egor Dmitrievich",
+                    name: "Egor",
                     status: "active",
                     id: 1,
-                    role: "admin"
+                    role: "owner",
+                    email: "email@email.com",
+                    memberSince: "10 Jan 2022"
                 },
                 {
-                    name: "Vitya",
-                    status: "inactive",
-                    id: 3,
-                    role: "owner"
+                    name: "Egor",
+                    status: "invited",
+                    id: 1,
+                    role: "member",
+                    email: "email@email.com",
+                    memberSince: "10 Jan 2022"
                 },
                 {
-                    name: "Sasha",
+                    name: "Egor",
                     status: "rejected",
-                    id: 2,
-                    role: "user"
+                    id: 1,
+                    role: "admin",
+                    email: "email@email.com",
+                    memberSince: "10 Jan 2022"
                 },
             ],
             id: 1,

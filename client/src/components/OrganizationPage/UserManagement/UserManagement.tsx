@@ -1,7 +1,8 @@
 import React from "react";
-import OrganizationStore from "@/stores/OrganizationStore";
+import {OrganizationStore} from "@/stores/OrganizationStore";
 import {IUserInOrganization, IUserOrganizations} from "@/types/Organizations";
 import AdminSection from "@/components/OrganizationPage/UserManagement/AdminSection";
+import AllMembers from "./AllMembers";
 
 const UserManagement: React.FC<{organizationsStore: OrganizationStore}> = ({organizationsStore}) => {
     const members: IUserInOrganization[] = organizationsStore.usersPageData.workspaceMembers
@@ -10,6 +11,7 @@ const UserManagement: React.FC<{organizationsStore: OrganizationStore}> = ({orga
     return (
         <div>
             <AdminSection admins={admins}/>
+            <AllMembers members={members}/>
         </div>
     )
 }
