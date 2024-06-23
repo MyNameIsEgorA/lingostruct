@@ -4,8 +4,15 @@ from rest_framework.permissions import IsAdminUser, IsAuthenticated, AllowAny
 from rest_framework import status
 from django.core.mail import send_mail
 
+
 import jwt
 from django.conf import settings
+
+# serializers
+# from ._serializers.another.another import *
+# from ._serializers.organization.organization import *
+# from ._serializers.project.project import *
+# from ._serializers.member.member import *
 
 from .serializers import (ListOrganizationSerializer, CreateOrganizationSerializer,
                           ListProjectSerializer, CreateProjectSerializer, NavOrganizationSerializer,
@@ -176,9 +183,9 @@ class AddMember(views.APIView):
         if organization:
             subject = profile.user.username
             message = (
-                        f"{subject}, вас пригласили в организацию {organization.name}. Для подтверждения перейдите по ссылке "
-                        f"http://{settings.ALLOWED_HOSTS[0]}" + '/api/task_manager/' + str(
-                    organization.city) + '.' + str(organization.name) + '363')
+                    f"{subject}, вас пригласили в организацию {organization.name}. Для подтверждения перейдите по ссылке "
+                    f"http://{settings.ALLOWED_HOSTS[0]}" + '/api/task_manager/' + str(
+                organization.city) + '.' + str(organization.name) + '363')
             send_mail(subject, message, settings.EMAIL_HOST_USER, [profile.user.email], fail_silently=False)
             member = Member.objects.create(profile=profile, organization=organization, role=Member.ROLE_CHOICE[0][0],
                                            status=Member.STATUS_CHOICE[1][0])
@@ -189,9 +196,11 @@ class AddMember(views.APIView):
 
 
 class ConfirmAddMember(views.APIView):
+
     def get(self, request, subject, organization_name, *args, **kwargs):
         profile = Profile.objects.get(user__username=subject)
         organization = Organization.objects.get(name=organization_name)
+
         if Member.objects.get(profile=profile):
             return Response({'detail': 'Пользователь уже существует'}, status=status.HTTP_409_CONFLICT)
         else:
@@ -199,3 +208,11 @@ class ConfirmAddMember(views.APIView):
                                            status=Member.STATUS_CHOICE[0][0])
             member.save()
         return Response({'detail': 'Пользователь добавлен в организацию'}, status=status.HTTP_200_OK)
+
+class Test(generics.GenericAPIView):
+    serializer_class = TestSerializer
+    def post(self, request):
+        serializer = TestSerializer(data=request.data)
+        if serializer.is_valid():
+            return Response({'form': serializer.data}, status=status.HTTP_200_OK)
+
