@@ -1,7 +1,12 @@
 import React from 'react';
 import Modal from 'react-modal';
+import Image from 'next/image';
+import CloseModal from "@/../public/Delete.svg"
+import { OrganizationStore } from '@/stores/OrganizationStore';
+import { useState } from 'react';
+import AddUserInput from './AddUserInput';
 
-Modal.setAppElement('#__next'); // Это необходимо для доступности модального окна
+Modal.setAppElement('#__next');
 
 interface ModalProps {
   isOpen: boolean;
@@ -9,6 +14,7 @@ interface ModalProps {
 }
 
 const ModalComponent: React.FC<ModalProps> = ({ isOpen, onRequestClose }) => {
+
   return (
     <Modal
       isOpen={isOpen}
@@ -24,18 +30,23 @@ const ModalComponent: React.FC<ModalProps> = ({ isOpen, onRequestClose }) => {
             transform: 'translate(-50%, -50%)',
             padding: 32,
             width: 520,
-            height: 214,
             borderRadius: 12,
-            minHeight: 600,
         },
         overlay: {
             backgroundColor: 'rgba(0, 0, 0, 0.3)', // Серая прозрачная тень
         },
     }}
     >
-      <h3 className=''>Invite members in workspace</h3>
-      <h5>Here you can invite new users by email</h5>
-      <button onClick={onRequestClose}>Закрыть</button>
+      <div className='flex justify-between'>
+        <h3 className='text-[18px] text-gray-900'>Invite members in workspace</h3>
+        <button>
+          <Image src={CloseModal} alt='Close' onClick={onRequestClose}/>
+        </button>
+
+      </div>
+      <h5 className="text-gray-400 mt-1">Here you can invite new users by email</h5>
+      <AddUserInput 
+        onRequestClose={onRequestClose}/>
     </Modal>
   );
 };

@@ -21,7 +21,119 @@ export const getOrganizationData = (id: number): IOrganizationPage => {
                     name: "Egor",
                     status: "active",
                     id: 1,
+                    role: "admin",
+                    email: "email@email.com",
+                    memberSince: "10 Jan 2022"
+                },
+                {
+                    name: "Egor",
+                    status: "active",
+                    id: 1,
                     role: "owner",
+                    email: "email@email.com",
+                    memberSince: "10 Jan 2022"
+                },
+                {
+                    name: "Egor",
+                    status: "inactive",
+                    id: 1,
+                    role: "member",
+                    email: "email@email.com",
+                    memberSince: "10 Jan 2022"
+                },
+                {
+                    name: "Egor",
+                    status: "active",
+                    id: 1,
+                    role: "member",
+                    email: "email@email.com",
+                    memberSince: "10 Jan 2022"
+                },
+                {
+                    name: "Egor",
+                    status: "active",
+                    id: 1,
+                    role: "member",
+                    email: "email@email.com",
+                    memberSince: "10 Jan 2022"
+                },
+                {
+                    name: "Egor",
+                    status: "active",
+                    id: 1,
+                    role: "owner",
+                    email: "email@email.com",
+                    memberSince: "10 Jan 2022"
+                },
+                {
+                    name: "Egor",
+                    status: "active",
+                    id: 1,
+                    role: "member",
+                    email: "email@email.com",
+                    memberSince: "10 Jan 2022"
+                },
+                {
+                    name: "Egor",
+                    status: "active",
+                    id: 1,
+                    role: "member",
+                    email: "email@email.com",
+                    memberSince: "10 Jan 2022"
+                },
+                {
+                    name: "Egor",
+                    status: "active",
+                    id: 1,
+                    role: "member",
+                    email: "email@email.com",
+                    memberSince: "10 Jan 2022"
+                },
+                {
+                    name: "Egor",
+                    status: "active",
+                    id: 1,
+                    role: "member",
+                    email: "email@email.com",
+                    memberSince: "10 Jan 2022"
+                },
+                {
+                    name: "Egor",
+                    status: "active",
+                    id: 1,
+                    role: "member",
+                    email: "email@email.com",
+                    memberSince: "10 Jan 2022"
+                },
+                {
+                    name: "Egor",
+                    status: "active",
+                    id: 1,
+                    role: "admin",
+                    email: "email@email.com",
+                    memberSince: "10 Jan 2022"
+                },
+                {
+                    name: "Egor",
+                    status: "active",
+                    id: 1,
+                    role: "member",
+                    email: "email@email.com",
+                    memberSince: "10 Jan 2022"
+                },
+                {
+                    name: "Egor",
+                    status: "active",
+                    id: 1,
+                    role: "member",
+                    email: "email@email.com",
+                    memberSince: "10 Jan 2022"
+                },
+                {
+                    name: "Egor",
+                    status: "active",
+                    id: 1,
+                    role: "member",
                     email: "email@email.com",
                     memberSince: "10 Jan 2022"
                 },
@@ -37,7 +149,7 @@ export const getOrganizationData = (id: number): IOrganizationPage => {
                     name: "Egor",
                     status: "rejected",
                     id: 1,
-                    role: "admin",
+                    role: "member",
                     email: "email@email.com",
                     memberSince: "10 Jan 2022"
                 },

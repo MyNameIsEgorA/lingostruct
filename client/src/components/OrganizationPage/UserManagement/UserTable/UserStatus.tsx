@@ -4,7 +4,7 @@ const UserStatus: React.FC<{status: string}> = ({status}) => {
     if (status === "active") {
         styles += " text-[#12B76A] bg-[#12B76A] bg-opacity-10"
     } 
-    if (status === "invited") {
+    if (status === "invited" || status === "inactive") {
         styles += " text-[#E5A94E] bg-[#E5A94E] bg-opacity-10"
     }
     if (status === "rejected") {

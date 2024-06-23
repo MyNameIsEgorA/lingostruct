@@ -13,7 +13,11 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
     "@hookform/resolvers": "^3.4.2",
+    "@mui/material": "^5.15.20",
+    "@mui/types": "^7.2.14",
     "@stackbit/types": "^2.0.2",
     "@types/react-datepicker": "^6.2.0",
     "@types/react-modal": "^3.16.3",

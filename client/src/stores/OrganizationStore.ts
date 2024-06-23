@@ -1,6 +1,7 @@
 import { makeAutoObservable } from "mobx";
 import { IOrganizationPage, IOrganizationPageUsers, IUserInOrganization } from "@/types/Organizations";
 import { getOrganizationData } from "@/api/organization/getOrganizationData";
+import { onClientSide } from "@/helpers/decorators/clientSide";
 
 export class OrganizationStore {
     private static instance: OrganizationStore | null = null;
@@ -14,6 +15,7 @@ export class OrganizationStore {
         this._organizationData = getOrganizationData(id);
         this._userStatus = this._organizationData.requestUser.role
         this._organizatinoID = id;
+        this.setOrganizationID(this._organizatinoID)
     }
 
     public static getInstance(id: number): OrganizationStore {
@@ -21,6 +23,20 @@ export class OrganizationStore {
             OrganizationStore.instance = new OrganizationStore(id);
         }
         return OrganizationStore.instance;
+    }
+
+    @onClientSide
+    private setOrganizationID(id: number): void {
+        sessionStorage.setItem("organizationID", JSON.stringify(this._organizatinoID))
+    }
+
+    @onClientSide
+    public static getOrganizationId(): string | null {
+        const organizationID = sessionStorage.getItem("organizationID")
+        if (!organizationID) {
+            return null
+        }
+        return JSON.parse(organizationID)
     }
 
     private getAdmins = (): IUserInOrganization[] => {
