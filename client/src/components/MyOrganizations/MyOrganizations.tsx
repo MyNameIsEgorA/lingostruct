@@ -1,7 +1,7 @@
 "use client"
 
 import Header from "@/components/Header/Header";
-import OrganizationsList from "@/components/MyOrganizations/OrganizationsList";
+import OrganizationsListContainer from "@/components/MyOrganizations/OrganizationsListContainer";
 import Footer from "@/components/Footer";
 
 const MyOrganizations = () => {
@@ -9,7 +9,7 @@ const MyOrganizations = () => {
     return (
         <>
             <Header/>
-            <OrganizationsList/>
+            <OrganizationsListContainer/>
             <Footer/>
         </>
     );

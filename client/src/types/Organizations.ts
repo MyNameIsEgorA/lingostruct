@@ -47,8 +47,22 @@ export interface IOrganizationApi {
     membersAmount: number
 }
 
+export interface ActiveOrganization {
+    id: number,
+        organization: {
+            id: number,
+            name: string,
+            country: string,
+            city: string,
+            address: string,
+            date_register: string,
+            creator: number,
+        }
+} 
+
 export interface IOrganizationsAPI {
-    organizations: IOrganizationApi[]
+    active_organizations: ActiveOrganization[],
+    invited: any[]
 }
 
 export interface IOrganizationPage {
