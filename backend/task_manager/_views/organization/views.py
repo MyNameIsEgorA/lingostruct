@@ -1,6 +1,6 @@
 from rest_framework.views import Response
 from rest_framework import generics
-from rest_framework.permissions import IsAdminUser, IsAuthenticated
+from rest_framework.permissions import IsAdminUser, IsAuthenticated, AllowAny
 from rest_framework import status
 
 # serializers
@@ -18,13 +18,15 @@ class ListAllOrganizations(generics.ListAPIView):
     permission_classes = [IsAdminUser]
 
 
-class CreateOrganization(generics.CreateAPIView):
-    queryset = Organization.objects.all()
+class CreateOrganization(generics.GenericAPIView):
     serializer_class = CreateOrganizationSerializer
-    permission_classes = [IsAuthenticated]
 
-    def post(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)
+    def post(self,request, *args, **kwargs):
+        user_profile = Profile.objects.get(user__pk=decode_token(request)['user_id'])
+        organization = Organization.objects.create(**request.data, creator=user_profile.user)
+        member = Member.objects.create(profile=user_profile, organization=organization,
+                                       status=Member.STATUS_CHOICE[0][0], role=Member.ROLE_CHOICE[2][0])
+        return Response({'detail': 'Организация зарегистрирована'}, status=status.HTTP_200_OK)
 
 
 class MyOrganizations(generics.ListAPIView):
@@ -39,24 +41,15 @@ class MyOrganizations(generics.ListAPIView):
         # member = Member.objects.filter(status='inactive')
         # serializer_member = MemberSerializer(member, many=True)
         user_profile = Profile.objects.get(user__pk=user_id)
-        print(user_profile)
         organization_is_active = user_profile.members.filter(status='active')
-        print(organization_is_active)
         serializer_active = MemberOrganizationSerializer(organization_is_active, many=True)
         organization_is_inactive = user_profile.members.filter(status='inactive')
-        print(organization_is_inactive)
         serializer_inactive = MemberOrganizationSerializer(organization_is_inactive, many=True)
 
         return Response({
             'active_organizations': serializer_active.data,
             'invited': serializer_inactive.data,
         }, status=status.HTTP_200_OK)
-
-        # return Response({
-        #     'organizations': serializer_organization.data,
-        #     'invited': serializer_member.data,
-        # }
-        # )
 
 
 class GetOrganization(generics.RetrieveUpdateDestroyAPIView):
@@ -90,4 +83,5 @@ class GetOrganization(generics.RetrieveUpdateDestroyAPIView):
             },
             'organization': serializer.data
         }, status=status.HTTP_200_OK)
+
 

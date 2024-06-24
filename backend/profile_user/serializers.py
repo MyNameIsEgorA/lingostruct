@@ -10,7 +10,15 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['username', 'email']
+
+
 class ProfileSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+
     class Meta:
         model = Profile
         fields = [
@@ -28,6 +36,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 class UpdateProfileSerializer(serializers.ModelSerializer):
     photo = serializers.ImageField(use_url=True, required=False)
+
     class Meta:
         model = Profile
         fields = ['first_name', 'last_name', 'age', 'photo']

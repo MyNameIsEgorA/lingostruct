@@ -14,3 +14,12 @@ class MemberOrganizationSerializer(serializers.ModelSerializer):
         model = Member
         fields = ['id', 'organization']
         depth = 1
+
+
+class ChangeMemberRoleSerializer(serializers.ModelSerializer):
+    role = serializers.ChoiceField(choices=Member.ROLE_CHOICE)
+    id = serializers.IntegerField(read_only=True)
+
+    class Meta:
+        model = Member
+        fields = ['id', 'role']

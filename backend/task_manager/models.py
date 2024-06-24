@@ -59,6 +59,7 @@ class Member(models.Model):
     ROLE_CHOICE = (
         ('member', 'Участник'),
         ('admin', 'Администратор'),
+        ('owner', 'Создатель'),
     )
     STATUS_CHOICE = (
         ('active', 'Активен'),
