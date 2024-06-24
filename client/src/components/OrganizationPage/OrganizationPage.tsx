@@ -14,6 +14,7 @@ interface Tab {
 const OrganizationsPage: React.FC<{id: number}> = observer(({id}) => {
     const [activeTab, setActiveTab] = useState<number>(0);
     const organizationStore: OrganizationStore = OrganizationStore.getInstance(id)
+    organizationStore.initialize()
 
     useEffect(() => {
         console.log(activeTab)

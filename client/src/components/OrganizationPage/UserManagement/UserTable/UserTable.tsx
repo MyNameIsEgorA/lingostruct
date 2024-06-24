@@ -37,7 +37,7 @@ const UserTable: React.FC<{ members: IUserInOrganization[], className: string }>
                         return (
                             <UserRow
                                 image={member.image}
-                                name={member.name}
+                                name={member.name || "member"}
                                 status={member.status}
                                 memberSince={member.memberSince}
                                 email={member.email}

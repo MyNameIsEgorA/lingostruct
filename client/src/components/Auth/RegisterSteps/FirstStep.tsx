@@ -3,7 +3,7 @@ import { IUserRegisterContactInfo } from "@/types/User";
 import "../inputFields.css";
 import { observer } from "mobx-react";
 import userAuthStore from "@/stores/UserAuthStore";
-import { emailValidation, fullNameValidation } from "@/helpers/registration/validations";
+import { emailValidation, fullNameValidation } from "@/helpers/validations";
 
 interface IProps {
     handleNext: () => void;

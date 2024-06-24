@@ -34,6 +34,13 @@ export interface IUserInOrganization {
     email: string,
 }
 
+export interface RequestUser {
+    id: number, 
+    name: string,
+    role: string,
+    status: string,
+}
+
 export interface IFullOrganizationInfo {
     name: string,
     country: string,
@@ -66,16 +73,18 @@ export interface IOrganizationsAPI {
 }
 
 export interface IOrganizationPage {
-    id: number,
-    creator: number,
-    name: string,
-    country: string,
-    city: string,
-    address: string,
-    data_register: string,
-    requestUser: IUserInOrganization,
-    members: IUserInOrganization[],
-    projects: IProjectInOrganization[],
+    request_user: RequestUser,
+    organization: {
+        creator: any,
+        id: number,
+        name: string,
+        country: string,
+        city: string,
+        address: string,
+        date_register: string,
+        members: IUserInOrganization[],
+        projects: IProjectInOrganization[],
+    },
 }
 
 export interface IOrganizationPageUsers {

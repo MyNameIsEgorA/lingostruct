@@ -6,16 +6,13 @@ import { onClientSide } from "@/helpers/decorators/clientSide";
 export class OrganizationStore {
     private static instance: OrganizationStore | null = null;
 
-    private _organizationData: IOrganizationPage;
+    private _organizationData: IOrganizationPage | null = null;
     private _userStatus: string = "admin";
-    private _organizatinoID: number;
+    private _organizationID: number;
 
     private constructor(id: number) {
         makeAutoObservable(this);
-        this._organizationData = getOrganizationData(id);
-        this._userStatus = this._organizationData.requestUser.role
-        this._organizatinoID = id;
-        this.setOrganizationID(this._organizatinoID)
+        this._organizationID = id;
     }
 
     public static getInstance(id: number): OrganizationStore {
@@ -25,34 +22,43 @@ export class OrganizationStore {
         return OrganizationStore.instance;
     }
 
+    public async initialize(): Promise<void> {
+        const response: IOrganizationPage = await getOrganizationData(this._organizationID)
+        this._organizationData = response;
+        this._userStatus = this._organizationData.request_user.role;
+        this.setOrganizationID(this._organizationID);
+    }
+
     @onClientSide
     private setOrganizationID(id: number): void {
-        sessionStorage.setItem("organizationID", JSON.stringify(this._organizatinoID))
+        sessionStorage.setItem("organizationID", JSON.stringify(this._organizationID));
     }
 
     @onClientSide
     public static getOrganizationId(): string | null {
-        const organizationID = sessionStorage.getItem("organizationID")
+        const organizationID = sessionStorage.getItem("organizationID");
         if (!organizationID) {
-            return null
+            return null;
         }
-        return JSON.parse(organizationID)
+        return JSON.parse(organizationID);
     }
 
     private getAdmins = (): IUserInOrganization[] => {
         const admins: IUserInOrganization[] = [];
-        this._organizationData.members.forEach(user => {
-            if (user.role === "admin" || user.role === "owner") {
-                admins.push(user);
-            }
-        });
+        if (this._organizationData) {
+            this._organizationData.organization.members.forEach(user => {
+                if (user.role === "admin" || user.role === "owner") {
+                    admins.push(user);
+                }
+            });
+        }
         return admins;
     }
 
     public get usersPageData(): IOrganizationPageUsers {
         return {
             administrators: this.getAdmins(),
-            workspaceMembers: this._organizationData.members
+            workspaceMembers: this._organizationData ? this._organizationData.organization.members : []
         };
     }
 
