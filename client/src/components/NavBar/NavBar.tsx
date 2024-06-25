@@ -11,7 +11,7 @@ import TasksImage from "@/../public/hammer-outline.svg";
 import Link from "next/link";
 import Activities from "@/components/NavBar/Activities";
 import Projects from "@/components/NavBar/Projects/Projects";
-import NavUserInfo from "@/components/NavBar/UserInfo/NavUserInfo";
+import NavUserInfo from "@/components/ overall/UserInfo/NavUserInfo"
 
 const NavBar = observer(() => {
     const [isDesktop, setIsDesktop] = useState<boolean>(true)

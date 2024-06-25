@@ -3,7 +3,7 @@ import {IUserProfile} from "@/types/User";
 import {getUserProfile} from "@/api/user/getUserInfo";
 import Image from "next/image";
 import TGA from "@/../public/TGAwhite.svg"
-import UserManagementOptions from "@/components/NavBar/UserInfo/UserManagementOptions";
+import UserManagementOptions from "@/components/ overall/UserInfo/UserManagementOptions";
 
 const Header: React.FC = () => {
 
@@ -24,10 +24,13 @@ const Header: React.FC = () => {
             <header className={"flex justify-between px-10 py-5 bg-[#202F3D] items-center"}>
                 <Image src={TGA} alt={"TGA"}/>
                     <div className={`flex space-x-3 items-center cursor-pointer`}
-                         onClick={() => {setShowModal(!showModal)}}>
+                        onMouseEnter={() => {setShowModal(true)}}
+                        >
                         {userInfo && <Image width={40} height={40} src={userInfo.image || ""} className={"rounded-full"} alt={""}/>}
                         <div className={"text-white relative"}>
-                            <div>{userInfo?.name || ""}</div>
+                            <div
+                                onClick={() => {setShowModal(prev => !prev)}}
+                            >{userInfo?.name || ""}</div>
                             <div className={"absolute top-10 right-10 w-[250px]"}>
                                 {showModal && <UserManagementOptions/>}
                             </div>
