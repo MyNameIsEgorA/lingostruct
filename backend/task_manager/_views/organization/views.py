@@ -1,3 +1,5 @@
+import datetime
+
 from rest_framework.views import Response
 from rest_framework import generics
 from rest_framework.permissions import IsAdminUser, IsAuthenticated, AllowAny
@@ -26,6 +28,7 @@ class CreateOrganization(generics.GenericAPIView):
         organization = Organization.objects.create(**request.data, creator=user_profile.user)
         member = Member.objects.create(profile=user_profile, organization=organization,
                                        status=Member.STATUS_CHOICE[0][0], role=Member.ROLE_CHOICE[2][0])
+        member.save()
         return Response({'detail': 'Организация зарегистрирована'}, status=status.HTTP_200_OK)
 
 
@@ -48,65 +51,56 @@ class MyOrganizations(generics.ListAPIView):
         }, status=status.HTTP_200_OK)
 
 
-class GetOrganization(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Organization.objects.all()
-    serializer_class = ListOrganizationSerializer
-    permission_classes = [IsAuthenticated]
-    http_method_names = ['get', 'patch', 'delete']
-
-    # {
-    #   "request_user": {
-    #     "id": 1,
-    #     "name": "admin",
-    #     "role": "admin",
-    #     "status": "active"
-    #   },
-    #   "organization": {
-    #     "id": 3,
-    #     "name": "Test",
-    #     "country": "Test",
-    #     "city": "Test",
-    #     "address": "Test",
-    #     "date_register": "2024-06-21T08:35:04.130464+03:00",
-    #     "members": [
-    #       {
-    #         "id": 17,
-    #         "role": "member",
-    #         "status": "rejected",
-    #         "name"(user_username): "admin",
-    #         "email"(user_email): "admin@admin.com",
-    #         "image"(profile_image): "url",
-    #         "memberSince"(member_date_joined): 'str",
-    #       },
-    #     ],
-    #     "projects": []
-    #   }
-    # }
+class OrganizationDetail(generics.GenericAPIView):
+    serializer_class = OrganizationDetailSerializer
 
     def get(self, request, *args, **kwargs):
-        request_user = Profile.objects.get(user=decode_token(request)['user_id'])
-        organization = Organization.objects.get(pk=kwargs['pk'])
-        serializer = OrganizationDetailSerializer(instance=organization, many=False)
+        profile = Profile.objects.get(user=decode_token(request)['user_id'])
+        organization_name = kwargs['organization_name']
+        organization = Organization.objects.get(name=organization_name)
+        serializer = OrganizationDetailSerializer(instance=organization)
         try:
-            request_user_detail = request_user.members.get(organization=kwargs['pk'])
-        except Member.DoesNotExist:
+            member_login = profile.members.get(organization=organization)
             return Response({
                 'request_user': {
-                    'id': None,
-                    'name': None,
-                    'role': None,
-                    'status': None,
+                    'id': profile.pk,
+                    'name': profile.user.username,
+                    'role': member_login.role,
+                    'status': member_login.status
                 },
-                'organization': serializer.data
+                'organization': serializer.data,
             }, status=status.HTTP_200_OK)
-        return Response({
-            'request_user': {
-                'id': request_user.pk,
-                'name': request_user.user.username,
-                'role': request_user_detail.role,
-                'status': request_user_detail.status,
-            },
-            'organization': serializer.data
-        }, status=status.HTTP_200_OK)
+        except Member.DoesNotExist:
+            return Response({'detail': f'Участник не найден'}, status=status.HTTP_400_BAD_REQUEST)
+
+    def patch(self, request, *args, **kwargs):
+        profile = Profile.objects.get(user=decode_token(request)['user_id'])
+        organization_name = kwargs['organization_name']
+        organization = Organization.objects.get(name=organization_name)
+        try:
+            if organization.members.get(profile=profile).role == 'owner':
+                pass
+        except Member.DoesNotExist:
+            return Response({'detail': f'Вы не создатель организации'}, status=status.HTTP_400_BAD_REQUEST)
+
+        organization.name = request.data.get('name', organization.name)
+        organization.country = request.data.get('country', organization.country)
+        organization.city = request.data.get('city', organization.city)
+        organization.address = request.data.get('address', organization.address)
+        organization.save()
+        serializer = OrganizationDetailSerializer(organization)
+        return Response({'organization': serializer.data}, status=status.HTTP_200_OK)
+
+    def delete(self, request, *args, **kwargs):
+        profile = Profile.objects.get(user=decode_token(request)['user_id'])
+        organization_name = kwargs['organization_name']
+        organization = Organization.objects.get(name=organization_name)
+        try:
+            if organization.members.get(profile=profile).role == 'owner':
+                pass
+        except Member.DoesNotExist:
+            return Response({'detail': f'Вы не создатель организации'}, status=status.HTTP_400_BAD_REQUEST)
+        organization.delete()
+        return Response({'organization': f'{organization_name} была удалена'}, status=status.HTTP_200_OK)
 
 

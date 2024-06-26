@@ -23,33 +23,30 @@ class MembersList(generics.ListAPIView):
     permission_classes = [IsAdminUser]
 
 
-class AddMember(views.APIView):
-    # response body {"email": "str"
-    #                "organization_name: "str"}
-    # Отсылается письмо с приглашением и создается Мембер со статусами.
+class AddMember(generics.GenericAPIView):
+    serializer_class = AddMemberSerializer
 
     def post(self, request, *args, **kwargs):
+        email = request.data.get('email')
+        org_name = request.data.get('organization_name')
         try:
-            profile = Profile.objects.get(user__email=kwargs['email'])
+            profile = Profile.objects.get(user__email=email)
         except Profile.DoesNotExist:
             return Response({'detail': 'Пользователь не найден'}, status=status.HTTP_404_NOT_FOUND)
         try:
-            organization = Organization.objects.get(name=kwargs['organization_name'])
+            organization = Organization.objects.get(name=org_name)
         except Organization.DoesNotExist:
             return Response({'detail': 'Организация не найдена'}, status=status.HTTP_404_NOT_FOUND)
-        if organization:
+        if organization and profile:
             subject = profile.user.username
-            message = (
-                    f"{subject}, вас пригласили в организацию {organization.name}. Для подтверждения перейдите по ссылке "
-                    f"http://{settings.ALLOWED_HOSTS[0]}" + '/api/task_manager/' + str(
-                organization.city) + '.' + str(organization.name) + '363')
+            message = (f'{subject}, вас пригласили в организацию {org_name}. Для подтверждения'
+                       f'перейдите по ссылке: http://45.89.189.236/api/task_manager/my_organizations')
             send_mail(subject, message, settings.EMAIL_HOST_USER, [profile.user.email], fail_silently=False)
-            member = Member.objects.create(profile=profile, organization=organization, role=Member.ROLE_CHOICE[0][0],
-                                           status=Member.STATUS_CHOICE[1][0])
-            member.save()
+            Member.objects.create(profile=profile, organization=organization, role=Member.ROLE_CHOICE[0][0],
+                                  status=Member.STATUS_CHOICE[1][0])
             return Response({'detail': 'Сообщение отправлено'}, status=status.HTTP_200_OK)
         else:
-            return Response({'detail': 'Организация не найдена'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'detail': 'Организация или профиль не действительны.'}, status=status.HTTP_404_NOT_FOUND)
 
 
 class ActiveMemberStatus(generics.GenericAPIView):

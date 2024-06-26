@@ -6,5 +6,5 @@ urlpatterns = [
     path('list_all_organizations/', ListAllOrganizations.as_view()),
     path('organization/create/', CreateOrganization.as_view()),
     path('my_organizations/', MyOrganizations.as_view()),
-    path('organization/<int:pk>/', GetOrganization.as_view(), name='organization-detail'),
+    path('organization/<str:organization_name>/', OrganizationDetail.as_view()),
 ]

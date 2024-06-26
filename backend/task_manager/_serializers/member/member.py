@@ -4,18 +4,21 @@ from ...models import Member
 
 
 class MemberSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source='profile.user.username')
+    organization_name = serializers.CharField(source='organization.name')
+
     class Meta:
         model = Member
-        fields = ['id', 'organization', 'project', 'status', 'role']
+        fields = ['id', 'username', 'organization', 'organization_name', 'project', 'status', 'role']
 
 
 class MemberOrganizationSerializer(serializers.ModelSerializer):
     membersAmount = serializers.IntegerField(source='organization.members.count')
-    member_id = serializers.IntegerField(source='id')
+    name = serializers.CharField(source='organization.name')
 
     class Meta:
         model = Member
-        fields = ['member_id', 'organization_id', 'membersAmount']
+        fields = ['name', 'organization_id', 'membersAmount']
 
 
 class ChangeMemberRoleSerializer(serializers.ModelSerializer):
@@ -41,3 +44,12 @@ class DeleteMemberSerializer(serializers.ModelSerializer):
     class Meta:
         model = Member
         fields = ['member_id']
+
+
+class AddMemberSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField(source='profile.user.email')
+    organization_name = serializers.CharField(source='organization.name')
+
+    class Meta:
+        model = Member
+        fields = ['email', 'organization_name']

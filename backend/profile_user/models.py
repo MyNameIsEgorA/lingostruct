@@ -23,7 +23,7 @@ class Profile(models.Model):
                               verbose_name='Аватар')
     created = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
 
-    verify_token = models.CharField(max_length=100, null=True)
+    verify_token = models.CharField(max_length=100, unique=True, null=True)
     is_verified = models.BooleanField(default=False, verbose_name='Верифицирован')
 
     objects = models.Manager()
