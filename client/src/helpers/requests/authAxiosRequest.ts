@@ -93,6 +93,10 @@ class Requests {
                     response = await this.instance.post(this.URL, this.body);
                     console.log(response.status)
                     this.depth = 0;
+                case RequestTypes.PATCH:
+                    response = await this.instance.patch(this.URL, this.body)
+                    this.depth = 0;
+                    return response;
         }}
         catch (e: any) {
             if (e.response.status !== 401) {

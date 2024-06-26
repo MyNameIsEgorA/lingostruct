@@ -3,7 +3,7 @@ import PasswordChange from "./PasswordChange"
 
 const Options = [
     {title: "Account Info", id: 1},
-    {title: "Passowrd", id: 2},
+    {title: "Password", id: 2},
     {title: "Delete Account", id: 3},
 ]
 
