@@ -71,7 +71,8 @@ class Member(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='members', verbose_name='Пользователь')
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE, related_name='members', verbose_name='Организация')
     project = models.ManyToManyField(Project, blank=True, related_name='members', verbose_name='Проект')
-    date_create = models.DateTimeField(auto_now_add=True, verbose_name='Дата присоединения')
+    date_create = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
+    date_joined = models.DateTimeField(auto_now=True, verbose_name='Дата присоединения')
 
     objects = models.Manager()
 

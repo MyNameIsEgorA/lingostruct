@@ -10,16 +10,34 @@ class MemberSerializer(serializers.ModelSerializer):
 
 
 class MemberOrganizationSerializer(serializers.ModelSerializer):
+    membersAmount = serializers.IntegerField(source='organization.members.count')
+    member_id = serializers.IntegerField(source='id')
+
     class Meta:
         model = Member
-        fields = ['id', 'organization']
-        depth = 1
+        fields = ['member_id', 'organization_id', 'membersAmount']
 
 
 class ChangeMemberRoleSerializer(serializers.ModelSerializer):
     role = serializers.ChoiceField(choices=Member.ROLE_CHOICE)
-    id = serializers.IntegerField(read_only=True)
+    member_id = serializers.PrimaryKeyRelatedField(queryset=Member.objects.all())
 
     class Meta:
         model = Member
-        fields = ['id', 'role']
+        fields = ['member_id', 'role']
+
+
+class ChangeMemberStatusAndRoleSerializer(serializers.ModelSerializer):
+    member_id = serializers.PrimaryKeyRelatedField(queryset=Member.objects.all())
+
+    class Meta:
+        model = Member
+        fields = ['member_id']
+
+
+class DeleteMemberSerializer(serializers.ModelSerializer):
+    member_id = serializers.PrimaryKeyRelatedField(queryset=Member.objects.all())
+
+    class Meta:
+        model = Member
+        fields = ['member_id']

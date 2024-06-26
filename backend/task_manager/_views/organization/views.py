@@ -36,10 +36,6 @@ class MyOrganizations(generics.ListAPIView):
 
     def get(self, request, *args, **kwargs):
         user_id = decode_token(request)['user_id']
-        # user_organizations = Organization.objects.filter(creator=user_id)
-        # serializer_organization = MyOrganizationSerializer(user_organizations, many=True)
-        # member = Member.objects.filter(status='inactive')
-        # serializer_member = MemberSerializer(member, many=True)
         user_profile = Profile.objects.get(user__pk=user_id)
         organization_is_active = user_profile.members.filter(status='active')
         serializer_active = MemberOrganizationSerializer(organization_is_active, many=True)
@@ -57,6 +53,35 @@ class GetOrganization(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ListOrganizationSerializer
     permission_classes = [IsAuthenticated]
     http_method_names = ['get', 'patch', 'delete']
+
+    # {
+    #   "request_user": {
+    #     "id": 1,
+    #     "name": "admin",
+    #     "role": "admin",
+    #     "status": "active"
+    #   },
+    #   "organization": {
+    #     "id": 3,
+    #     "name": "Test",
+    #     "country": "Test",
+    #     "city": "Test",
+    #     "address": "Test",
+    #     "date_register": "2024-06-21T08:35:04.130464+03:00",
+    #     "members": [
+    #       {
+    #         "id": 17,
+    #         "role": "member",
+    #         "status": "rejected",
+    #         "name"(user_username): "admin",
+    #         "email"(user_email): "admin@admin.com",
+    #         "image"(profile_image): "url",
+    #         "memberSince"(member_date_joined): 'str",
+    #       },
+    #     ],
+    #     "projects": []
+    #   }
+    # }
 
     def get(self, request, *args, **kwargs):
         request_user = Profile.objects.get(user=decode_token(request)['user_id'])

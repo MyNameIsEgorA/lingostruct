@@ -40,11 +40,3 @@ class Navbar(views.APIView):
             'projects': projects_serializer.data
         })
 
-
-class Test(generics.GenericAPIView):
-    serializer_class = TestSerializer
-
-    def post(self, request):
-        serializer = TestSerializer(data=request.data)
-        if serializer.is_valid():
-            return Response({'form': serializer.data}, status=status.HTTP_200_OK)
