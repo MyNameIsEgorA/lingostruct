@@ -21,16 +21,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Profile
-        fields = [
-            'id',
-            'user',
-            'first_name',
-            'last_name',
-            'age',
-            'photo',
-            'created',
-            'is_verified'
-        ]
+        fields = ['id', 'user', 'first_name', 'last_name', 'age', 'photo', 'created', 'is_verified']
         depth = 1
 
 
@@ -72,17 +63,26 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
 
 class ChangePasswordSerializer(serializers.ModelSerializer):
-    new_password = serializers.CharField(max_length=122, write_only=True)
-    repeat_password = serializers.CharField(max_length=128, write_only=True)
+    id = serializers.IntegerField(read_only=True)
+    new_password = serializers.CharField(min_length=8, max_length=122, write_only=True)
+    repeat_password = serializers.CharField(min_length=8, max_length=122, write_only=True)
 
     class Meta:
         model = User
         fields = ['id', 'password', 'new_password', 'repeat_password']
 
-    def update(self, instance, validated_data):
-        user = User.objects.get(pk=instance.pk)
-        if validated_data.get('new_password') == validated_data.get('repeat_password') and user.check_password(validated_data.get('password')):
-            user.set_password(validated_data.get('new_password'))
-            user.save()
-            return instance
-        return instance
+
+class MyProfileSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(source='user.username')
+    email = serializers.EmailField(source='user.email')
+    image = serializers.ImageField(source='photo')
+
+    class Meta:
+        model = Profile
+        fields = ['name', 'email', 'image']
+
+
+class ResendEmailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['email']

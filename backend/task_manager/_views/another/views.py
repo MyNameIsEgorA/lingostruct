@@ -20,7 +20,7 @@ def decode_token(request):
     return decoded_token
 
 
-class Navbar(views.APIView):
+class Navbar(generics.GenericAPIView):
     def get(self, request, *args, **kwargs):
         user_id = decode_token(request)['user_id']
         profile = Profile.objects.get(user=user_id)
